@@ -16,7 +16,7 @@ How to install?
 
 *OR*
 
- -Download the source code, compile and install the app on your Glass (Using Android studio or any other IDE) 
+- Download the source code, compile and install the app on your Glass (Using Android studio or any other IDE) 
 
 
 How to use?
