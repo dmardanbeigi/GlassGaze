@@ -12,14 +12,14 @@ GlassGaze is a client for the open source Haytham gaze tracker <Eye.itu.dk>. Thi
 
 How to install?
 =========
--find the GlassGaze.apk file inside the folder APK and install it on your Google GLass using ADB on the command line.
+- find the GlassGaze.apk file inside the folder APK and install it on your Google GLass using ADB on the command line.
 
 *OR*
 
--Download the source code, compile and install the app on your Glass (Using Android studio or any other IDE) 
+ -Download the source code, compile and install the app on your Glass (Using Android studio or any other IDE) 
 
 
 How to use?
 =========
-Tutorials and a detailed description on how to use the software and how to prepare the hardwarecan be found at <>.
+Tutorials and more detailes can be found at <>.
 
