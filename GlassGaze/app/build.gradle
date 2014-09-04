@@ -1,0 +1,26 @@
+apply plugin: 'android'
+
+android {
+    compileSdkVersion "Google Inc.:Glass Development Kit Preview:19"
+    buildToolsVersion "20.0.0"
+
+    defaultConfig {
+        applicationId "com.eye.itu.haytham.glassgaze"
+        minSdkVersion 19
+        targetSdkVersion 19
+
+
+    }
+
+    buildTypes {
+        release {
+            runProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+}
+dependencies {
+    compile files('libs/zxing-core-2.3.jar')
+    compile 'com.android.support:appcompat-v7:19.+'
+
+}
