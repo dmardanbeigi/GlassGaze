@@ -24,6 +24,8 @@ How to use?
 Tutorials and more detailes can be found at <http://goo.gl/kIRCdm>.
 
 Collaborators:
+
 Diako Mardanbegi <dima@itu.dk>
+
 Shahram Jalalinia <jsha@itu.dk>
 
