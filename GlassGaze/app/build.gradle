@@ -24,3 +24,21 @@ dependencies {
     compile 'com.android.support:appcompat-v7:19.+'
 
 }
+
+///.....................................used for Server test
+//.................................not used in the released version
+dependencies {
+
+    compile files('libs/httpclient-4.3.5.jar')
+    compile files('libs/httpcore-4.3.2.jar')
+    compile files('libs/httpmime-4.3.5.jar')
+
+}
+android {
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+    }
+}

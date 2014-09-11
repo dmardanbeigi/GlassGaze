@@ -18,7 +18,6 @@ package com.google.zxing.client.android.share;
 
 import android.app.ListActivity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.provider.Browser;
 import android.view.View;
 import android.widget.Adapter;

@@ -7,14 +7,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
-import android.os.Environment;
 import android.os.Handler;
-import android.os.Message;
-import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 
 
 public class PhotoHandler implements PictureCallback {

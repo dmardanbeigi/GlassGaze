@@ -11,7 +11,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.graphics.Color;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,9 +24,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.glassgaze.GazeDisplay.Demos.GazeShow;
@@ -40,7 +36,6 @@ import com.glassgaze.R;
 import com.glassgaze.Utils;
 import com.glassgaze.WifiService;
 import com.glassgaze.card.CardAdapter;
-import com.google.android.glass.touchpad.GestureDetector;
 import com.google.android.glass.view.WindowUtils;
 import com.google.android.glass.widget.CardScrollView;
 
@@ -123,8 +118,7 @@ public final class DisplayActivity extends Activity {
     };
     private void init()
     {
-
-        mWifiService. GazeStream(RGT,false);
+        mWifiService.GazeStream(RGT,false);
     }
 
     //......................WIFI SERVICE
@@ -216,8 +210,6 @@ public final class DisplayActivity extends Activity {
 
                             int x = Utils.GetX(readBuf);
                             int y = Utils.GetY(readBuf);
-
-
 
 
                             break;

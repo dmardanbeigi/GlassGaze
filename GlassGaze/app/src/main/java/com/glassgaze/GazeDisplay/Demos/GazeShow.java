@@ -63,7 +63,6 @@ public class GazeShow extends Activity{
     //.......................WIFI SERVICE
 
 
-
     /**
      * Messenger used for communicating with service.
      */
@@ -215,9 +214,6 @@ class IncomingHandler extends Handler {
                             mPointerViewDisplay.GazeEvent(x, y, 0);
                             mPointerViewDisplay.postInvalidate();
 
-
-
-
                         }
                         // if(cardSelected && mCardScroller.getSelectedItemId()==APP?) DO SOMETHING ELSE!;
 
@@ -239,14 +235,12 @@ class IncomingHandler extends Handler {
         if (requestCode == 1) {
             if(resultCode == RESULT_OK){
 
-
-
                 //String result=data.getStringExtra("result");
             }
             if (resultCode == RESULT_CANCELED) {
 
                 //Write your code if there's no result
-                audio.playSoundEffect(Sounds.ERROR);
+               // audio.playSoundEffect(Sounds.ERROR);
 
             }
         }
@@ -272,8 +266,6 @@ class IncomingHandler extends Handler {
 
         setContentView(R.layout.display_blank);
 
-
-
     }
 
     //...................................................
@@ -296,7 +288,6 @@ class IncomingHandler extends Handler {
 
         super.onStart();
 
-
     }
 
     @Override
@@ -305,10 +296,7 @@ class IncomingHandler extends Handler {
         Intent intent= new Intent(this, WifiService.class);
         bindService(intent, mConnection,Context.BIND_AUTO_CREATE);
 
-
         super.onResume();
-
-
     }
 
     @Override
@@ -398,10 +386,6 @@ class IncomingHandler extends Handler {
         return super.onMenuItemSelected(featureId, item);
     }
 
-
-
-
-
     private GestureDetector createGestureDetector(Context context) {
         GestureDetector gestureDetector = new GestureDetector(context);
         gestureDetector.setBaseListener( new GestureDetector.BaseListener() {
@@ -415,7 +399,6 @@ class IncomingHandler extends Handler {
                    // Toggles voice menu. Invalidates menu to flag change.
                    mVoiceMenuEnabled = !mVoiceMenuEnabled;
                    getWindow().invalidatePanelMenu(WindowUtils.FEATURE_VOICE_COMMANDS);
-
 
                    return true;
                }

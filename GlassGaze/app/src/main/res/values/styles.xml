@@ -28,13 +28,44 @@
 
 
 
-    <style name="AppTheme" parent="@android:style/Theme.DeviceDefault">
-    </style>
+    <style name="AppTheme" parent="@android:style/Theme.DeviceDefault"> </style>
 
     <style name="CaptureTheme" parent="@style/AppTheme">
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowActionBarOverlay">true</item>
         <item name="android:windowActionModeOverlay">true</item>
+    </style>
+
+    <style name="Widget.DescriptionBar">
+        <!--<item name="android:background">#fb3</item>-->
+        <item name="android:paddingTop">@dimen/margin_medium</item>
+        <item name="android:paddingBottom">@dimen/margin_medium</item>
+        <item name="android:paddingLeft">@dimen/page_margin</item>
+        <item name="android:paddingRight">@dimen/page_margin</item>
+        <item name="android:textAppearance">?android:textAppearanceSmall</item>
+        <item name="android:gravity">center </item>
+        <item name="android:lineSpacingMultiplier">1.1</item>
+    </style>
+
+    <!-- Activity themes -->
+
+    <style name="Theme.Base" parent="android:Theme.Light" />
+
+
+    <!-- Widget styling -->
+
+    <style name="Widget" />
+
+    <style name="Widget.SampleMessage">
+        <item name="android:textAppearance">?android:textAppearanceMedium</item>
+        <item name="android:lineSpacingMultiplier">1.1</item>
+    </style>
+
+    <style name="Widget.SampleMessageTile">
+        <item name="android:background">@drawable/tile</item>
+        <item name="android:shadowColor">#7F000000</item>
+        <item name="android:shadowDy">-3.5</item>
+        <item name="android:shadowRadius">2</item>
     </style>
 </resources>

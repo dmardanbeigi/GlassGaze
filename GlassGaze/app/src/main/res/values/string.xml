@@ -20,6 +20,12 @@
 
 
 
+
+
+
+
+
+
     <!-- The voice trigger used for launching general demos. -->
     <string name="voice_trigger">GlassGaze</string>
     <string name="app_name">GlassGaze</string>
@@ -97,7 +103,7 @@
      </string>
 
    <string name="text_displayGaze_main">
-       -Move between demos by swipping right/left \n
+       -Move between demos by swiping right/left \n
        -Select a demo by tapping
     </string>
 

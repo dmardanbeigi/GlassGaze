@@ -14,7 +14,6 @@ import android.os.Messenger;
 import android.os.RemoteException;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -158,8 +157,6 @@ public String getMyIP(){
         //Log.d("Wifi_Service", "........................................Wifi_Service STOPED! ");
 
 
-
-
         //stopSelf();
 
     }
@@ -178,7 +175,6 @@ public String getMyIP(){
 
 
         return super.onStartCommand(intent, flags, startId);
-
 
     }
 

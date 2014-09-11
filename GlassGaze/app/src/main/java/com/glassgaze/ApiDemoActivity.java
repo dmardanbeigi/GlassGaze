@@ -18,7 +18,6 @@ package com.glassgaze;
 
 import com.github.barcodeeye.scan.CaptureActivity;
 
-
 import com.glassgaze.GazeDisplay.DisplayActivity;
 
 import com.glassgaze.GazeLiveView.LiveViewActivity;
@@ -65,6 +64,8 @@ public class ApiDemoActivity extends Activity  {
     static final int DISPLAY = 0;
     static final int LIVEVIEW = 1;
     static final int EXIT = 2;
+
+
 
 
     private CardScrollAdapter mAdapter;
@@ -255,7 +256,8 @@ public class ApiDemoActivity extends Activity  {
                 .setText(R.string.text_LIVEVIEW));
 
 
-       cards.add(EXIT, new Card(context).setText(R.string.text_EXIT));
+
+        cards.add(EXIT, new Card(context).setText(R.string.text_EXIT));
 
 
   /*     cards.add(EXIT, new Card(context)
@@ -412,6 +414,9 @@ public class ApiDemoActivity extends Activity  {
                         finish();
 
                         break;
+
+
+
 
                     default:
                         soundEffect = Sounds.ERROR;

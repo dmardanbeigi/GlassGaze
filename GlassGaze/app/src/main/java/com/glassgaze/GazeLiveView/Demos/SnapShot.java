@@ -4,7 +4,6 @@
 package com.glassgaze.GazeLiveView.Demos;
 
 
-import android.animation.Animator;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -33,7 +32,6 @@ import com.glassgaze.GazeLiveView.CameraView;
 import com.glassgaze.GazeLiveView.PhotoHandler;
 import com.glassgaze.MessageType;
 import com.glassgaze.R;
-import com.glassgaze.SliderView;
 import com.glassgaze.Utils;
 import com.glassgaze.WifiService;
 import com.google.android.glass.media.Sounds;

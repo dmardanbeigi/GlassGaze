@@ -72,31 +72,27 @@
         </service>
 
 
-        <activity
-            android:name="com.glassgaze.GazeDisplay.Demos.GazeShow"
-            android:exported="true"
-            android:hardwareAccelerated="true" />
 
         <activity
-            android:name="com.glassgaze.GazeLiveView.Demos.SnapShot"
+            android:name=".GazeDisplay.Demos.GazeShow"
             android:exported="true"
             android:hardwareAccelerated="true" />
-
         <activity
-            android:name="com.glassgaze.GazeDisplay.DisplayActivity"
+            android:name=".GazeLiveView.Demos.SnapShot"
+            android:exported="true"
+            android:hardwareAccelerated="true" />
+        <activity
+            android:name=".GazeDisplay.DisplayActivity"
             android:exported="true" />
         <activity
-        android:name="com.glassgaze.GazeDisplay.Calibration"
-        android:exported="true" />
-
+            android:name=".GazeDisplay.Calibration"
+            android:exported="true" />
         <activity
             android:name=".GazeLiveView.LiveViewActivity"
             android:exported="true" />
         <activity
             android:name=".GazeLiveView.Calibration"
             android:exported="true" />
-
-
 
         <service
             android:name=".WifiService"
