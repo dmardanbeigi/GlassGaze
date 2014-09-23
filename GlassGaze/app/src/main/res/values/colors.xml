@@ -22,12 +22,14 @@
     <!-- Preferred Glass red/yellow/green hues and their half-bright variants, used for outlining
          and filling the finger spots in the touchpad view. -->
     <color name="red">#cc3333</color>
+    <color name="blue">#0000FF</color>
     <color name="dark_red">#661919</color>
-    <color name="yellow">#ddbb11</color>
+    <color name="yellow">#ffddd92a</color>
     <color name="dark_yellow">#6e5d08</color>
     <color name="green">#99cc33</color>
     <color name="dark_green">#4c6619</color>
     <color name="white">#ffffff</color>
+
 
 
 

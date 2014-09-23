@@ -18,6 +18,12 @@
 
 
 
+    <string name="intro_message">
+        <![CDATA[
+               Look and tap!
+ ]]>
+    </string>
+
 
 
 
@@ -109,6 +115,13 @@
 
     <string name="text_displayGaze_gazeshow">
        See your gaze point on the display!
+    </string>
+
+       <string name="text_displayGaze_gazelist">
+       Look at the item you want to select and tap!
+    </string>
+        <string name="text_displayGaze_magicpointing">
+       Magic pointing!
     </string>
 
 

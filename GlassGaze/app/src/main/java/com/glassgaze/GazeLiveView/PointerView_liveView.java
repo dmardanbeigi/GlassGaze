@@ -25,7 +25,7 @@ import com.glassgaze.R;
 
 /**
  * Provides a visual representation of the Glass touchpad, with colored and labeled circles that
- * represent the locations of the user's fingers when they are on the touchpad.
+ * represent the locations_display_Coordinate of the user's fingers when they are on the touchpad.
  */
 public class PointerView_liveView extends RelativeLayout {
 

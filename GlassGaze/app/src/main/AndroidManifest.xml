@@ -72,6 +72,10 @@
         </service>
 
 
+        <activity
+            android:name=".GazeDisplay.Demos.SimpleGazeList.GazeListActivity"
+            android:exported="true"
+            android:hardwareAccelerated="true" />
 
         <activity
             android:name=".GazeDisplay.Demos.GazeShow"

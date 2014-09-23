@@ -51,7 +51,6 @@ public class CardAdapter extends CardScrollAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
        return mCards.get(position).getView(convertView, parent);
 
-
     }
 
     @Override

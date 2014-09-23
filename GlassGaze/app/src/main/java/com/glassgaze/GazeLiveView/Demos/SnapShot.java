@@ -236,7 +236,7 @@ class IncomingHandler extends Handler {
     }
 }
     // private final Handler mHandler = new Handler();
-    // The Handler that gets information back from the BluetoothChatService
+    // The Handler that gets information back
     private final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(final Message msg) {

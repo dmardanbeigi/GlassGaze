@@ -334,7 +334,7 @@ public final class LiveViewActivity extends Activity {
 
     @Override
     protected void onResume() {
-
+        mCardScroller.activate();
         Intent intent = new Intent(this, WifiService.class);
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
 

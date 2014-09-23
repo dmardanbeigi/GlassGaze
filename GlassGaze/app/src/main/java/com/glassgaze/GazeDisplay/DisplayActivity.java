@@ -27,6 +27,8 @@ import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.glassgaze.GazeDisplay.Demos.GazeShow;
+
+import com.glassgaze.GazeDisplay.Demos.SimpleGazeList.GazeListActivity;
 import com.google.android.glass.app.Card;
 import com.google.android.glass.media.Sounds;
 
@@ -39,6 +41,7 @@ import com.glassgaze.card.CardAdapter;
 import com.google.android.glass.view.WindowUtils;
 import com.google.android.glass.widget.CardScrollView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,11 +54,15 @@ public final class DisplayActivity extends Activity {
 
 
     // Index of the cards.
-    static final int GAZESHOW = 1;
-    static final int MOREDEMOS =2;
+   static final int GAZESHOW = 1;
+       static final int GAZELIST =2;
+
+    static final int MOREDEMOS =3;
+
 
 
     static final int RGT = 1;
+    static final int CALIB = 1;
 
 
     private boolean mVoiceMenuEnabled = true;
@@ -180,6 +187,13 @@ public final class DisplayActivity extends Activity {
                     byte[] readBuf = (byte[]) msg.obj;
 
                     switch (Utils.GetIndicator(readBuf)) {
+                        case MessageType.toGLASS_LetsCorrectOffset:
+
+
+                            mWifiService.write(MessageType.toHAYTHAM_Calibrate_Display_Correct);
+
+
+                            break;
                         case MessageType.toGLASS_Calibrate_Display:
 
 
@@ -191,7 +205,7 @@ public final class DisplayActivity extends Activity {
 
 
                                 Intent i = new Intent(DisplayActivity.this, Calibration.class);
-                                startActivityForResult(i, 1);
+                                startActivityForResult(i,CALIB);
 
 
                             }
@@ -223,13 +237,36 @@ public final class DisplayActivity extends Activity {
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 1) {
+
+        if (requestCode == CALIB) {
             if(resultCode == RESULT_OK){
                 //String result=data.getStringExtra("result");
             }
             if (resultCode == RESULT_CANCELED) {
                 //Write your code if there's no result
-             }
+
+            }
+        }
+        if (requestCode == GAZELIST) {
+            if (resultCode == RESULT_OK) {
+                String result = data.getStringExtra("result");
+                try {
+
+                Bundle args = data.getBundleExtra("names");
+                List<String> names = ( List<String>) args.getSerializable("ARRAYLIST");
+
+
+                    Toast.makeText(getApplicationContext(), names.get(Integer.valueOf(result)) + " selected", Toast.LENGTH_LONG).show();
+                }
+                catch (Exception e)
+                {
+                    Toast.makeText(getApplicationContext(),"index: " +Integer.valueOf(result) , Toast.LENGTH_LONG).show();
+
+                }
+            }
+            if (resultCode == RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
         }
     }//onActivityResult
 
@@ -286,7 +323,7 @@ public final class DisplayActivity extends Activity {
 
     @Override
     protected void onResume() {
-
+        mCardScroller.activate();
         Intent intent= new Intent(this, WifiService.class);
         bindService(intent, mConnection,Context.BIND_AUTO_CREATE);
 
@@ -341,13 +378,12 @@ public final class DisplayActivity extends Activity {
             switch (item.getItemId()) {
                 case R.id.menu_calibrate: {
                     mWifiService.GazeStream(RGT, false);
-
                     mWifiService.Speek("Wait!");
                     mWifiService.write(MessageType.toHAYTHAM_Calibrate_Display_4);
                 } break;
                 case R.id.menu_correctOffset:  {
                     mWifiService.GazeStream(RGT, false);
-
+                    mWifiService.Speek("Wait!");
                     mWifiService.write(MessageType.toHAYTHAM_Calibrate_Display_Correct);
 
                 } break;
@@ -372,9 +408,15 @@ public final class DisplayActivity extends Activity {
                 .setText(R.string.text_displayGaze_main));
 
         cards.add(GAZESHOW, new Card(context)
-                .addImage(getImageResource(1))
+                .addImage(getImageResource(GAZESHOW))
                 .setImageLayout(Card.ImageLayout.LEFT)
                 .setText(R.string.text_displayGaze_gazeshow));
+
+        cards.add(GAZELIST, new Card(context)
+                .addImage(getImageResource(GAZELIST))
+                .setImageLayout(Card.ImageLayout.LEFT)
+                .setText(R.string.text_displayGaze_gazelist));
+
 
         cards.add(MOREDEMOS,new Card(context).setText(R.string.text_MOREDEMOS));
 
@@ -388,6 +430,8 @@ public final class DisplayActivity extends Activity {
         switch (i) {
             //case CALIBRATION:  return R.drawable.rm;
             case GAZESHOW:  return  R.drawable.gazeshow;
+            case GAZELIST:  return  R.drawable.gazelist;
+
             default: return 0;
         }
     }
@@ -407,6 +451,40 @@ public final class DisplayActivity extends Activity {
                     case GAZESHOW:
                         am.playSoundEffect( Sounds.TAP);
                         startActivity(new Intent(DisplayActivity.this, GazeShow.class));
+                        break;
+                        
+
+                    case GAZELIST:
+
+                    {
+                        am.playSoundEffect( Sounds.TAP);
+
+
+                        List<String> names = new ArrayList<String>();
+                        names.add(0, "item 1");
+                        names.add(1, "item 2");
+                        names.add(2, "item 3");
+
+
+
+                        List<String> ids = new ArrayList<String>();
+                        ids.add(0, "item 1 id");
+                        ids.add(1, "item 2 id");
+                        ids.add(2, "item 3 id");
+
+
+
+
+                        Intent intent = new Intent(DisplayActivity.this, GazeListActivity.class);
+                        Bundle args = new Bundle();
+                        args.putSerializable("ARRAYLIST", (Serializable) names);
+                        intent.putExtra("names", args);
+                        args = new Bundle();
+                        args.putSerializable("ARRAYLIST", (Serializable) ids);
+                        intent.putExtra("IDs", args);
+                        startActivityForResult(intent, GAZELIST);
+                    }
+
                         break;
 
                     case MOREDEMOS:

@@ -1,7 +1,7 @@
 /**
  * Created by diako on 8/27/2014.
  */
-package com.glassgaze.GazeDisplay.Demos;
+package com.glassgaze.GazeDisplay.Demos.SimpleGazeList;
 
 
 import android.app.Activity;
@@ -9,7 +9,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.graphics.Color;
+import android.graphics.Point;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,12 +18,10 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.glassgaze.Constants;
@@ -36,22 +34,22 @@ import com.glassgaze.WifiService;
 import com.google.android.glass.media.Sounds;
 import com.google.android.glass.touchpad.Gesture;
 import com.google.android.glass.touchpad.GestureDetector;
-import com.google.android.glass.view.WindowUtils;
 
-public class GazeShow extends Activity{
+import java.io.Serializable;
+import java.util.List;
 
+public class GazeListActivity extends Activity {
 
-    private Boolean showPointer=true;
-
+    ListView myList;
+    GazeListAdapter customAdapter;
+    private Point gaze=new Point(0,0);
+    PointerView_display mPointerViewDisplay;
     private GestureDetector mGestureDetector = null;
 
     static final int RGT = 1;
+    static final int CALIB = 1;
 
 
-    PointerView_display mPointerViewDisplay;
-
-    FrameLayout preview;
-    private boolean mVoiceMenuEnabled = true;
     /**
      * Messenger used for receiving responses from service.
      * Activity target published for clients to send messages to IncomingHandler.
@@ -67,7 +65,6 @@ public class GazeShow extends Activity{
     Messenger mService = null;
     private WifiService mWifiService;
     private boolean mBounded;
-
 
 
     private ServiceConnection mConnection = new ServiceConnection() {
@@ -96,7 +93,7 @@ public class GazeShow extends Activity{
 
         }
         public void onServiceDisconnected(ComponentName className) {
-            Toast.makeText(GazeShow.this, "Service is disconnected", Toast.LENGTH_SHORT).show();
+            Toast.makeText(GazeListActivity.this, "Service is disconnected", Toast.LENGTH_SHORT).show();
             mBounded = false;
             mWifiService = null;
         }
@@ -108,19 +105,10 @@ public class GazeShow extends Activity{
 
 private void init()
 {
-    mWifiService.GazeStream(RGT,true);
-    mPointerViewDisplay = (PointerView_display) findViewById(R.id.pointerView_display);
-    mPointerViewDisplay.setBackgroundColor(mWifiService.backgroundColor);
+    mWifiService.GazeStream(RGT, true);
 
 }
     //......................WIFI SERVICE
-
-
-// protected abstract void setAdapter(CardScrollView view);
-
-
-
-
 /**
  * Activity Handler of incoming messages
  */
@@ -191,8 +179,8 @@ class IncomingHandler extends Handler {
                         {
 
 
-                            Intent i = new Intent(GazeShow.this, Calibration.class);
-                            startActivityForResult(i, 1);
+                            Intent i = new Intent(GazeListActivity.this, Calibration.class);
+                            startActivityForResult(i,CALIB);
 
 
                         }
@@ -210,16 +198,37 @@ class IncomingHandler extends Handler {
 
                     case MessageType.toGLASS_GAZE_RGT:
 
-                        int x = Utils.GetX(readBuf);
-                        int y = Utils.GetY(readBuf);
+                        //gaze.x = Utils.GetX(readBuf);
+                        gaze.y = Utils.GetY(readBuf);
 
-                        if( showPointer )
-                        {
+                        int item_height = 96;
+                        if (myList.getSelectedItemPosition()!=0 &&(gaze.y > 0 && gaze.y < item_height)) {
+                            myList.setSelection(0);
+                            // myList.requestFocus();
+                            // myList.clearChoices();
+                            // myList.getSelectedView().setSelected(false);
+                            myList.setItemChecked(0, true);
+                        } else if (myList.getSelectedItemPosition()!=1 && myList.getCount() > 1 && (gaze.y > item_height && gaze.y < 2 * item_height)) {
+                            myList.setSelection(1);
 
-                            mPointerViewDisplay.GazeEvent(x, y, 0);
-                            mPointerViewDisplay.postInvalidate();
+                            myList.setItemChecked(1, true);
 
+                            int test=myList.getSelectedItemPosition();
+                            myList.setSelection(1);
+
+                            myList.setItemChecked(1, true);
+
+
+                        } else if (myList.getSelectedItemPosition()!=2 && myList.getCount() > 2 && (gaze.y >2* item_height && gaze.y < 3 * item_height)) {
+                            myList.setSelection(2);
+                            myList.setItemChecked(2, true);
+                        }else if (myList.getSelectedItemPosition()!=3 && myList.getCount() > 3 && (gaze.y >3* item_height && gaze.y < 4 * item_height)) {
+                            myList.setSelection(3);
+                            myList.setItemChecked(3, true);
                         }
+
+                        //Log.i("gaze:", String.valueOf(gaze.y));
+
                         // if(cardSelected && mCardScroller.getSelectedItemId()==APP?) DO SOMETHING ELSE!;
 
 
@@ -233,46 +242,77 @@ class IncomingHandler extends Handler {
     }
 }
 
-
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        AudioManager audio = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
 
-        if (requestCode == 1) {
+        if (requestCode == CALIB) {
             if(resultCode == RESULT_OK){
-
                 //String result=data.getStringExtra("result");
             }
             if (resultCode == RESULT_CANCELED) {
-
                 //Write your code if there's no result
-               // audio.playSoundEffect(Sounds.ERROR);
 
             }
         }
+
     }//onActivityResult
-
-
-
-
 
 
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
 
-        // Requests a voice menu on this activity. As for any other window feature,
-        // be sure to request this before setContentView() is called
-        getWindow().requestFeature(WindowUtils.FEATURE_VOICE_COMMANDS);
-
         // Ensure screen stays on during demo.
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         mGestureDetector = createGestureDetector(this);
 
-        setContentView(R.layout.display_blank);
+
+        Intent intent = getIntent();
+        Bundle args = intent.getBundleExtra("names");
+        List<String> names = ( List<String>) args.getSerializable("ARRAYLIST");
+        args = intent.getBundleExtra("IDs");
+        List<String> IDs = ( List<String>) args.getSerializable("ARRAYLIST");
+
+        setContentView(R.layout.gazelist_view);
+         customAdapter = new GazeListAdapter(getApplicationContext(),names,IDs);
+         myList = (ListView) findViewById(R.id.my_list);
+        myList.setAdapter(customAdapter);
+
+        myList.setOverScrollMode(View.OVER_SCROLL_NEVER);
+        myList.setVerticalScrollBarEnabled(false);
+
+
+
+        runOnUiThread(new Runnable() {
+            public void run() {
+                myList.requestFocus();
+                myList.clearChoices();
+               // myList.setSelection(0);
+               // myList.getSelectedView().setSelected(false);
+
+               // myList.clearFocus();
+            }
+        });
 
     }
 
+    @Override
+    public  void onAttachedToWindow() {
+/*        super.onAttachedToWindow();
+        //does not work
+        try {
+            myList.clearFocus();
+            myList.clearChoices();
+            myList.setSelection(-1);
+            myList.invalidate();
+        }
+        catch (Exception e)
+        {
+
+        }*/
+
+
+    }
     //...................................................
     @Override
     protected void onDestroy(){
@@ -322,90 +362,71 @@ class IncomingHandler extends Handler {
         }
         super.onPause();
     }
-    //..................................VoiceMenu
 
-    @Override
-    public boolean onCreatePanelMenu(int featureId, Menu menu) {
-        if (featureId == WindowUtils.FEATURE_VOICE_COMMANDS) {
-            getMenuInflater().inflate(R.menu.voice_menu_display_gazeshow, menu);
-            return true;
-        }
-        // Good practice to pass through, for options menu.
-        return super.onCreatePanelMenu(featureId, menu);
+    public  int getItemHeightofListView(ListView listView, int item) {
+
+
+        int listviewElementsheight = 0;
+        // for listview total item height
+        // items = mAdapter.getCount();
+
+
+
+            View childView = customAdapter.getView(item, null, listView);
+            childView.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+            listviewElementsheight= childView.getMeasuredHeight();
+
+
+            //debug
+           int top= childView.getTop();
+           Log.d("top", String.valueOf( top));
+           int btm= childView.getBottom();
+        Log.d("btm", String.valueOf( btm));
+           int totalH= childView.getHeight();
+        Log.d("totalH", String.valueOf( totalH));
+
+
+        return listviewElementsheight;
+
     }
+    private void Done(int selected_indx){
+        Intent returnIntent = new Intent();
+        AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        am.playSoundEffect(Sounds.TAP);
 
-    @Override
-    public boolean onPreparePanel(int featureId, View view, Menu menu) {
-        if (featureId == WindowUtils.FEATURE_VOICE_COMMANDS) {
-            // Dynamically decides between enabling/disabling voice menu.
-            return mVoiceMenuEnabled;
+        returnIntent.putExtra("result", String.valueOf(selected_indx));
+
+        if (selected_indx!=-1){
+
+            Bundle args = new Bundle();
+            args.putSerializable("ARRAYLIST", (Serializable) customAdapter.list_names);
+            returnIntent.putExtra("names", args);
         }
-        // Good practice to pass through, for options menu.
-        return super.onPreparePanel(featureId, view, menu);
+
+    setResult(RESULT_OK,returnIntent);
+
+        finish();
+
     }
-
-    @Override
-    public boolean onMenuItemSelected(int featureId, MenuItem item) {
-        if (featureId == WindowUtils.FEATURE_VOICE_COMMANDS) {
-            switch (item.getItemId()) {
-                case R.id.menu_calibrate: {
-                    mWifiService. GazeStream(RGT, false);
-
-                    mWifiService.Speek("Wait!");
-                    mWifiService.write(MessageType.toHAYTHAM_Calibrate_Display_4);
-                } break;
-                case R.id.menu_correctOffset:  {
-                    mWifiService. GazeStream(RGT, false);
-                    mWifiService.Speek("Wait!");
-                    mWifiService.write(MessageType.toHAYTHAM_Calibrate_Display_Correct);
-
-                } break;
-                case R.id.menu_color_white:
-                    int backgroundColor = Color.BLACK;
-                {
-                    backgroundColor =Color.WHITE;
-                    mWifiService.backgroundColor= backgroundColor;
-                    mPointerViewDisplay.setBackgroundColor(mWifiService.backgroundColor);
-                }  break;
-                case R.id.menu_color_gray:  {
-                    backgroundColor =Color.GRAY;
-                    mWifiService.backgroundColor= backgroundColor;
-                    mPointerViewDisplay.setBackgroundColor(mWifiService.backgroundColor);
-                } break;
-                case R.id.menu_color_blue:  {
-                    backgroundColor =Color.BLUE;
-                    mWifiService.backgroundColor= backgroundColor;
-                    mPointerViewDisplay.setBackgroundColor(mWifiService.backgroundColor);
-                }  break;
-                case R.id.menu_color_black:  {
-                    backgroundColor =Color.BLACK;
-                    mWifiService.backgroundColor= backgroundColor;
-                    mPointerViewDisplay.setBackgroundColor(mWifiService.backgroundColor);
-                }  break;
-
-                case R.id.menu_pointer_show: showPointer=true;  break;
-                case R.id.menu_pointer_hide: showPointer=false; mPointerViewDisplay.hideFingerTrace(0,true);  break;
-                default: return true;  // No change.
-            }
-
-            return true;
-        }
-        return super.onMenuItemSelected(featureId, item);
-    }
-
     private GestureDetector createGestureDetector(Context context) {
         GestureDetector gestureDetector = new GestureDetector(context);
         gestureDetector.setBaseListener( new GestureDetector.BaseListener() {
             @Override
             public boolean onGesture(Gesture gesture) {
-               if (gesture == Gesture.TWO_TAP) {
+                if (gesture == Gesture.TAP) {
 
-                   // Plays sound.
-                   AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-                   am.playSoundEffect(Sounds.TAP);
-                   // Toggles voice menu. Invalidates menu to flag change.
-                   mVoiceMenuEnabled = !mVoiceMenuEnabled;
-                   getWindow().invalidatePanelMenu(WindowUtils.FEATURE_VOICE_COMMANDS);
+
+/*                    Toast.makeText(getApplicationContext(),
+                            String.valueOf(getItemHeightofListView(myList,0)),
+                            Toast.LENGTH_LONG).show();*/
+
+
+                    Done(myList.getSelectedItemPosition());
+
+                    return true;
+                }
+               else if (gesture == Gesture.TWO_TAP) {
+
 
                    return true;
                }

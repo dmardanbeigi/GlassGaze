@@ -15,6 +15,10 @@ import android.os.RemoteException;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 
+import com.google.gson.Gson;
+
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -74,6 +78,7 @@ public class WifiService extends Service {
     public int mSubState;
     public static final int SUBSTATE_GENERAL_RECEIVE = 5;
     public static final int SUBSTATE_SENDPHOTO = 6;
+    public static final int SUBSTATE_SENDJSON = 7;
 
     static final int HMGT = 0;
     static final int RGT = 1;
@@ -81,6 +86,7 @@ public class WifiService extends Service {
     public int backgroundColor=R.color.background_color;
 
     public String myIP="";
+    public int myIP_int;
 
 
     public  Boolean mStop=false;
@@ -116,6 +122,8 @@ public String getMyIP(){
     WifiManager wm = (WifiManager) getSystemService(WIFI_SERVICE);
     WifiInfo wifiInfo = wm.getConnectionInfo();
     int ip = wifiInfo.getIpAddress();
+    myIP_int=ip;
+
     String ipString = String.format(
             "%d.%d.%d.%d",
             (ip & 0xff),
@@ -125,6 +133,16 @@ public String getMyIP(){
    return ipString;
 
 }
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        if (mConnectThread != null) {mConnectThread.cancel(); mConnectThread = null;}
+        if (mConnectedThread != null)  mConnectedThread = null;
+
+        stopSelf();
+
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -143,7 +161,6 @@ public String getMyIP(){
 
     }
 
-
     /**
      * Stop all threads
      */
@@ -161,23 +178,14 @@ public String getMyIP(){
 
     }
 
-
-
-
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        // start new thread and you your work there
-      //  new Thread(runnable).start();
 
-       // mStop=false;
         new Thread(new GoConnect()).start();
-
 
         return super.onStartCommand(intent, flags, startId);
 
     }
-
 
 
     class IncomingHandler extends Handler {
@@ -420,8 +428,38 @@ public String getMyIP(){
             r.sendPhoto(payload);
         }
     }
+ /*   public void sendJson( JSONObject json,int msg)
+    {
+        if (mConnectedThread!=null) {
+            // Create temporary object
+            ConnectedThread r;
+            // Synchronize a copy of the ConnectedThread
+            synchronized (this) {
+                if (mState != STATE_CONNECTED) return;
+                r = mConnectedThread;
+            }
+            // Perform the write unsynchronized
 
 
+            r.sendJson(json, msg);
+        }
+    }*/
+    public void sendJson( String json,int msg)
+    {
+        if (mConnectedThread!=null) {
+            // Create temporary object
+            ConnectedThread r;
+            // Synchronize a copy of the ConnectedThread
+            synchronized (this) {
+                if (mState != STATE_CONNECTED) return;
+                r = mConnectedThread;
+            }
+            // Perform the write unsynchronized
+
+
+            r.sendJson(json, msg);
+        }
+    }
 
     private int FindHost() {
         int found = 0;
@@ -581,9 +619,13 @@ public String getMyIP(){
      * It handles all incoming and outgoing transmissions.
      */
     public class ConnectedThread extends Thread {
-        public  Socket mmSocket;
+        public Socket mmSocket;
         public OutputStream mmOutStream;
         public InputStream mmInStream;
+
+        private DatagramSocket mmUDPSocket;
+        private DatagramSocket mmUDPSocket_listening;
+
 
         public ConnectedThread(Socket socket) {
             setName("ConnectedThread");
@@ -591,7 +633,6 @@ public String getMyIP(){
 
             Log.d(TAG, "create ConnectedThread");
             mmSocket = socket;
-
 
 
             InputStream tmpIn = null;
@@ -611,10 +652,53 @@ public String getMyIP(){
 
             mmInStream = tmpIn;
             mmOutStream = tmpOut;
+
+try {
+    Thread.sleep(2000);
+    WriteUDP("Hello Haytham!");
+}catch (Exception ex)
+{}
+            //a seperate thread for receiving the gaze data via UDP.
+            new  Thread(new Runnable() {
+                public void run() {
+
+
+
+                    byte[]  buffer = new byte[Constants.MSG_SIZE];
+                    DatagramPacket receivePacket = new DatagramPacket(buffer, buffer.length);
+
+                    while (mConnectedThread!=null) {
+
+                        try {
+                            //UDP
+                            mmUDPSocket_listening = new DatagramSocket(Constants.SERVER_PORT_UDP_GAZE);
+                            mmUDPSocket_listening.setSoTimeout(1000);
+                            receivePacket = new DatagramPacket(buffer, buffer.length);
+                            mmUDPSocket_listening.receive(receivePacket);
+                            if (mSubState == SUBSTATE_GENERAL_RECEIVE && receivePacket.getLength()==12) {
+                                // Send the obtained bytes to the UI Activity
+                                // mHandler.obtainMessage(MessageType.MESSAGE_READ, bytes, -1, buffer).sendToTarget();
+                                Message msg = Message.obtain(null, MessageType.MESSAGE_READ, receivePacket.getLength(), -1, buffer);
+                                sendToActivity(msg);
+                            }
+                        } catch (IOException e) {
+
+                               // Log.e(TAG, "UDP GAZE recieve ERROR!!!!!!!!!!!!!", e);
+
+
+                        }finally {
+                            if (mmUDPSocket_listening != null) {
+                                mmUDPSocket_listening.disconnect();
+                                mmUDPSocket_listening.close();
+                            }
+                        }
+                    }
+
+
+                }}).start();
         }
 
         public void run() {
-
 
             Log.i(TAG, "BEGIN mConnectedThread");
             byte[] buffer = new byte[Constants.MSG_SIZE];
@@ -626,8 +710,6 @@ public String getMyIP(){
 
 
                     buffer = new byte[16];//digest size is 16 even though MSG size is 12
-
-
                     bytes = mmInStream.read(buffer, 0, buffer.length);
 
 
@@ -635,20 +717,19 @@ public String getMyIP(){
                         throw new IOException("***********************Server missing!!");
 
                 } catch (IOException e) {
-                    Log.e(TAG, "disconnected", e);
+                    Log.d(TAG, "disconnected");
                     cancel();
                     break;
                 }
 
                 if (mSubState == SUBSTATE_GENERAL_RECEIVE && bytes==12) {
+
+
+
                     // Send the obtained bytes to the UI Activity
                     // mHandler.obtainMessage(MessageType.MESSAGE_READ, bytes, -1, buffer).sendToTarget();
                     Message msg = Message.obtain(null, MessageType.MESSAGE_READ, bytes, -1, buffer);
                     sendToActivity(msg);
-
-
-
-
 
                 } else if (mSubState == SUBSTATE_SENDPHOTO) {
 
@@ -676,12 +757,12 @@ public String getMyIP(){
 
         }
 
+
         public void write(int msg) {
 
 
-
             byte[] toHaythm = new byte[Constants.MSG_SIZE];
-            byte[] msgArray=Utils.intToByteArray(msg);
+            byte[] msgArray = Utils.intToByteArray(msg);
 
             // 12 bytes msg format iiiixxxxyyyy
             java.lang.System.arraycopy(msgArray, 0, toHaythm, 0, msgArray.length);
@@ -702,6 +783,33 @@ public String getMyIP(){
 
         }
 
+        public void WriteUDP(String msg)
+        {
+
+            try {
+                mmUDPSocket = new DatagramSocket(Constants.SERVER_PORT_UDP);
+
+                //send your IP to Haytham
+                byte[] sendData = msg.getBytes();
+                InetAddress myIP_inet=InetAddress.getByName(Constants.directServerIP);
+
+                mmUDPSocket.setReuseAddress(true);
+                DatagramPacket packet = new DatagramPacket(sendData, sendData.length,myIP_inet, Constants.SERVER_PORT_UDP);
+
+                mmUDPSocket.send(packet);
+
+
+            } catch (IOException e) {
+                Log.e(TAG, "*************************************************************** \n", e);
+            }  finally {
+                if (mmUDPSocket!=null) {
+                    mmUDPSocket.disconnect();
+                    mmUDPSocket.close();
+                    //mmUDPSocket = null;
+                }
+            }
+
+        }
 
 /*
         public void write(byte[] buffer) {
@@ -755,7 +863,6 @@ public String getMyIP(){
                 Message msg = Message.obtain(null,MessageType.SENDING_DATA);
                 sendToActivity(msg);
 
-
                 write(MessageType.toHAYTHAM_HeadderComming);//tell the server to wait for the headder
                 // Send the header control first
                 mmOutStream.write(Constants.HEADER_MSB);
@@ -784,6 +891,66 @@ public String getMyIP(){
         }
 
 
+       /* public void sendJson( JSONObject json,int msg){
+
+
+            Log.v(TAG, "Handle received data to send");
+            mSubState=SUBSTATE_SENDJSON;
+            try {
+
+
+                //json to byte array
+                byte[] payload = json.toString().getBytes("utf-8");
+
+
+                write(msg);//tell the server to wait for the headder
+
+                // write size
+                mmOutStream.write(Utils.intToByteArray(payload.length));
+
+
+
+                // now write the data
+                mmOutStream.write(payload);
+                mmOutStream.flush();
+
+            } catch (Exception e) {
+                Log.e(TAG, e.toString());
+
+                cancel();
+            }
+            mSubState=SUBSTATE_GENERAL_RECEIVE;
+        }
+*/
+        public void sendJson( String json,int msg){
+
+
+            Log.v(TAG, "Handle received data to send");
+            mSubState=SUBSTATE_SENDJSON;
+            try {
+
+                //json to byte array
+                byte[] payload = json.getBytes("utf-8");
+
+
+                write(msg);//tell the server to wait for the headder
+
+                // write size
+                mmOutStream.write(Utils.intToByteArray(payload.length));
+
+
+
+                // now write the data
+                mmOutStream.write(payload);
+                mmOutStream.flush();
+
+            } catch (Exception e) {
+                Log.e(TAG, e.toString());
+
+                cancel();
+            }
+            mSubState=SUBSTATE_GENERAL_RECEIVE;
+        }
 
         public void cancel() {
             Speek("Haytham disConnected");
@@ -798,8 +965,9 @@ public String getMyIP(){
             // }
 
           if(!mStop)  connect();
-          else     stopSelf();
-
+          else {
+              stopSelf();
+          }
 
         }
         private void CloseSocket(){

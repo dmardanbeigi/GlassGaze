@@ -26,7 +26,6 @@ public class MessageType {
     public static final int REQUEST_CONNECT_DEVICE = 11;
     public static final int REQUEST_ENABLE_BT = 22;
 
-    // Message types sent from the BluetoothChatService Handler
     public static final int MESSAGE_STATE_CHANGE = 111;
     public static final int MESSAGE_READ = 222;
     public static final int MESSAGE_WRITE = 33;
@@ -51,7 +50,8 @@ public class MessageType {
     public static final int toHAYTHAM_SnapshotComming = 1009;
     public static final int toHAYTHAM_SceneCalibrationReady =1010;
     public  static final int toHAYTHAM_HeadderComming=1011;
-
+    public  static final int toHAYTHAM_Calibrate_Display_Finished=1012;
+    public static final int toHAYTHAM_JsonComming = 1013;
 
 
     //HAYTHAM to GLASS
@@ -61,7 +61,9 @@ public class MessageType {
     public static final int toGLASS_Calibrate_Display = 2004;
     public static final int toGLASS_Calibrate_Scene = 2005;
     public static final int toGLASS_ERROR_NOTCalibrated =2006;
-
+    public static final int  toGLASS_WHAT_IS_YOUR_IP = 2007;
+    public static final int  toGLASS_DataReceived = 2008;
+    public static final int toGLASS_LetsCorrectOffset = 2009;
 
 
 

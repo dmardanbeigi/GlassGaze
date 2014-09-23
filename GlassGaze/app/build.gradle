@@ -28,10 +28,12 @@ dependencies {
 ///.....................................used for Server test
 //.................................not used in the released version
 dependencies {
-
+    compile files('libs/commons-io-2.4.jar')
     compile files('libs/httpclient-4.3.5.jar')
     compile files('libs/httpcore-4.3.2.jar')
     compile files('libs/httpmime-4.3.5.jar')
+    compile  files('libs/gson-2.2.4.jar')
+
 
 }
 android {

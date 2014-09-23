@@ -14,11 +14,10 @@ import java.io.ByteArrayOutputStream;
 
 public class PhotoHandler implements PictureCallback {
     private final Handler mHandler;
-  private final Context context;
 
-  public PhotoHandler(Context context,Handler handler) {
+    public PhotoHandler(Context context,Handler handler) {
       mHandler = handler;
-    this.context = context;
+        Context context1 = context;
   }
 
   @Override

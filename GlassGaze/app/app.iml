@@ -83,8 +83,10 @@
     <orderEntry type="library" exported="" name="httpcore-4.3.2" level="project" />
     <orderEntry type="library" exported="" name="httpclient-4.3.5" level="project" />
     <orderEntry type="library" exported="" name="zxing-core-2.3" level="project" />
+    <orderEntry type="library" exported="" name="gson-2.2.4" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-19.1.0" level="project" />
     <orderEntry type="library" exported="" name="support-v4-19.1.0" level="project" />
+    <orderEntry type="library" exported="" name="commons-io-2.4" level="project" />
   </component>
 </module>
 

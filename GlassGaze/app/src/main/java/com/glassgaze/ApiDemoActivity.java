@@ -18,6 +18,7 @@ package com.glassgaze;
 
 import com.github.barcodeeye.scan.CaptureActivity;
 
+
 import com.glassgaze.GazeDisplay.DisplayActivity;
 
 import com.glassgaze.GazeLiveView.LiveViewActivity;
@@ -67,8 +68,6 @@ public class ApiDemoActivity extends Activity  {
 
 
 
-
-    private CardScrollAdapter mAdapter;
     private CardScrollView mCardScroller;
     private CardScrollView mView;
 
@@ -93,7 +92,6 @@ public class ApiDemoActivity extends Activity  {
 
 
    // private final Handler mHandler = new Handler();
-    // The Handler that gets information back from the BluetoothChatService
     private final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -256,7 +254,6 @@ public class ApiDemoActivity extends Activity  {
                 .setText(R.string.text_LIVEVIEW));
 
 
-
         cards.add(EXIT, new Card(context).setText(R.string.text_EXIT));
 
 
@@ -285,30 +282,26 @@ public class ApiDemoActivity extends Activity  {
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
 
-        //test
 
 
-
-        mAdapter = new CardAdapter(createCards(this));
-        mCardScroller = new CardScrollView(this);
-        mCardScroller.setAdapter(mAdapter);
-        setContentView(mCardScroller);
-        setCardScrollerListener();
-
-       // Intent serviceIntent = new Intent( this, WifiService.class);
-       // startService(serviceIntent);
 
 
         // Ensure screen stays on during demo.
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
 
+        CardScrollAdapter mAdapter = new CardAdapter(createCards(this));
+        mCardScroller = new CardScrollView(this);
+        mCardScroller.setAdapter(mAdapter);
+        setContentView(mCardScroller);
+        setCardScrollerListener();
+
         if (Constants.QRcode_Scan ) {
             Constants.QRcode_Scan=false;//Only for the first time
-            //setContentView(R.layout.activity_launch);
-            //startActivity(CaptureActivity.newIntent(this));
             startActivity(new Intent(ApiDemoActivity.this, CaptureActivity.class));
         }
+
+
 
 
 
@@ -380,6 +373,7 @@ public class ApiDemoActivity extends Activity  {
                         break;
 
 
+
                     case EXIT:
                         mWifiService.tts.shutdown();
                         mWifiService.tts = null;
@@ -402,7 +396,6 @@ public class ApiDemoActivity extends Activity  {
 
 
                             stopService(new Intent(ApiDemoActivity.this, AppService.class));
-
 
 
 

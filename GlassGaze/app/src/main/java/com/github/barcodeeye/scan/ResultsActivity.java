@@ -27,7 +27,6 @@ public class ResultsActivity extends Activity {
     private static final String EXTRA_IMAGE_URI = "EXTRA_IMAGE_URI";
 
     private final List<CardPresenter> mCardPresenters = new ArrayList<CardPresenter>();
-    private CardScrollView mCardScrollView;
 
     public static Intent newIntent(Context context,
             List<CardPresenter> cardResults) {
@@ -62,7 +61,7 @@ public class ResultsActivity extends Activity {
             return;
         }
 
-        mCardScrollView = new CardScrollView(this);
+        CardScrollView mCardScrollView = new CardScrollView(this);
         mCardScrollView.setAdapter(new CardScrollViewAdapter(this,
                 mCardPresenters));
         mCardScrollView.activate();

@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 
 public class AppViewer extends FrameLayout {
-    private final TextView mTextView;
     public AppViewer(Context context) {
         this(context, null, 0);
     }
@@ -20,7 +19,7 @@ public class AppViewer extends FrameLayout {
     public AppViewer(Context context, AttributeSet attrs, int style) {
         super(context, attrs, style);
         LayoutInflater.from(context).inflate(R.layout.start,this);
-        mTextView =  (TextView) findViewById(R.id.hello_view);
+        TextView mTextView = (TextView) findViewById(R.id.hello_view);
         mTextView.setText("GlassGaze");
     }
 }

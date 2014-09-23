@@ -41,7 +41,6 @@ public class Calibration extends Activity {
     private CameraView cameraView = null;
 
     public boolean waitForYesNo = false;
-    private CountDownTimer cdTimer;
     private long total = 4000;
     private long tempTotal = 5000;
 
@@ -254,7 +253,7 @@ public class Calibration extends Activity {
     }
 
     // private final Handler mHandler = new Handler();
-    // The Handler that gets information back from the BluetoothChatService
+    // The Handler that gets information back
     private final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(final Message msg) {
@@ -272,7 +271,7 @@ public class Calibration extends Activity {
     };
 
     private void startCountDownTimer() {
-        cdTimer = new CountDownTimer(tempTotal, 1000) {
+        CountDownTimer cdTimer = new CountDownTimer(tempTotal, 1000) {
             public void onTick(long millisUntilFinished) {
                 //update total with the remaining time left
                 tempTotal = millisUntilFinished;

@@ -35,11 +35,11 @@ import com.google.android.glass.touchpad.GestureDetector;
 public class Calibration extends Activity {
 
     private GestureDetector mGestureDetector = null;
-    PointerView_display mPointerViewDisplay;
+
     static final int HMGT = 0;
     static final int RGT = 1;
-
-
+    PointerView_display mPointerViewDisplay;
+    private Boolean showPointer=false;
 
     /**
      * Messenger used for receiving responses from service.
@@ -169,7 +169,7 @@ private void init()
                             {
                                // Toast.makeText(getApplicationContext(), "Calibration finished!", Toast.LENGTH_SHORT).show(); //"M1
 
-                                mPointerViewDisplay.hideFingerTrace(1);
+                                mPointerViewDisplay.hideFingerTrace(1,true);
 
                                 Done();
 
@@ -193,7 +193,19 @@ private void init()
                             Cancel();
                         }
                             break;
+                        case MessageType.toGLASS_GAZE_RGT:
 
+                            int x = Utils.GetX(readBuf);
+                            int y = Utils.GetY(readBuf);
+
+
+                            if( showPointer )
+                            {
+
+                                mPointerViewDisplay.GazeEvent(x, y, 0);
+                                mPointerViewDisplay.postInvalidate();
+
+                            }
                         default:
                             super.handleMessage(msg);
                     }
@@ -223,30 +235,38 @@ private void Done(){
     //((TextView)findViewById(R.id.label)).setText(getString(R.string.deleted_label));
 
 
-
-    new Handler().postDelayed(new Runnable()
+   new Handler().postDelayed(new Runnable()
     {
         public void run()
         {
+
+            setContentView(R.layout.display_blank);
+            mPointerViewDisplay = (PointerView_display) findViewById(R.id.pointerView_display);
+            mPointerViewDisplay.setBackgroundColor(Color.BLACK);
+
+            showPointer=true;
+            mWifiService.GazeStream(RGT,true);
             finish();
         }
     }, 1000);
 
 
 
-
-
 }
-    private void Cancel(){
+    private void Cancel() {
+        if (!showPointer) {
+            Intent returnIntent = new Intent();
+            setResult(RESULT_CANCELED, returnIntent);
 
-        Intent returnIntent = new Intent();
-        setResult(RESULT_CANCELED, returnIntent);
-
-        AudioManager audio = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
-        audio.playSoundEffect(Sounds.ERROR);
-
+            AudioManager audio = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+            audio.playSoundEffect(Sounds.ERROR);
+            Toast.makeText(getApplicationContext(), "Try again", Toast.LENGTH_LONG).show();
+        }
         finish();
     }
+
+
+
 
     @Override
     protected void onCreate(Bundle bundle) {
@@ -255,7 +275,7 @@ private void Done(){
         // Ensure screen stays on during demo.
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         // Turn on Gestures
-        mGestureDetector = createGestureDetector(this);
+       // mGestureDetector = createGestureDetector(this);
 
         setContentView(R.layout.display_blank);
         mPointerViewDisplay = (PointerView_display) findViewById(R.id.pointerView_display);
@@ -271,6 +291,8 @@ private void Done(){
     //...................................................
     @Override
     protected void onDestroy(){
+
+        mWifiService.write(MessageType.toHAYTHAM_Calibrate_Display_Finished);
 
         if(mBounded) {
             unbindService(mConnection);
@@ -328,7 +350,8 @@ private void Done(){
             @Override
             public boolean onGesture(Gesture gesture) {
                 if (gesture == Gesture.SWIPE_DOWN ) {
-                    Cancel();
+
+                Cancel();
 
                     return true;
                 }
