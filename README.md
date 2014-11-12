@@ -1,6 +1,8 @@
-GlassGaze
+GLASSGAZE
+Let your Google Glass know what exactly your eyes are looking at!
 =========
 Gaze tracking extension for Google Glass
+https://www.youtube.com/watch?feature=player_embedded&v=x4TZYyZRFKg
 
 ![GlassGaze](https://raw.githubusercontent.com/dmardanbeigi/GlassGaze/master/ScreenShots/droidAtScreen-30.png "Eye.itu.dk")
 
