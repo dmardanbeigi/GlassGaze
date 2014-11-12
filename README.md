@@ -2,8 +2,7 @@ GLASSGAZE
 Let your Google Glass know what exactly your eyes are looking at!
 =========
 Gaze tracking extension for Google Glass
-https://www.youtube.com/watch?feature=player_embedded&v=x4TZYyZRFKg
-
+<iframe width="560" height="315" src="//www.youtube.com/embed/x4TZYyZRFKg" frameborder="0" allowfullscreen></iframe>
 ![GlassGaze](https://raw.githubusercontent.com/dmardanbeigi/GlassGaze/master/ScreenShots/droidAtScreen-30.png "Eye.itu.dk")
 
 GlassGaze is a client for the open source Haytham gaze tracker <Eye.itu.dk>. This app allows you to do eye tracking and gaze tracking on Google Glass. It allows the Glass to know where exactly you are looking at inside the display and even in your field of view. Now you can interact with Glass by your eyes!
