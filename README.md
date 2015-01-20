@@ -30,7 +30,7 @@ How to install?
 
 - Download the source code, compile and install the app on your Glass (Using Android studio or any other IDE) 
 
-Full instruction and more detailes can be found at <http://goo.gl/kIRCdm>.
+Full instruction and more detailes can be found at <http://goo.gl/QhZvnN>.
 
 How to use?
 --------------
