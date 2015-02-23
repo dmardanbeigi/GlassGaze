@@ -239,7 +239,7 @@ public final class LiveViewActivity extends Activity {
                             int x1 = Utils.GetX(readBuf);
                             int y1 = Utils.GetY(readBuf);
 
-                            if (x1 == -1 && y1 == -1) //only show the text on the display
+                            if (x1 == -1 && y1 == -1)
                             {
 
                                 Intent i = new Intent(LiveViewActivity.this, com.glassgaze.GazeLiveView.Calibration.class);
@@ -247,7 +247,14 @@ public final class LiveViewActivity extends Activity {
 
 
                             }
+                            else if (x1 == -6 && y1 == -6)
+                            {
 
+                                Intent i = new Intent(LiveViewActivity.this, Calibration_offset.class);
+                                startActivityForResult(i, 1);
+
+
+                            }
                             break;
                         case MessageType.toGLASS_test:
                             Toast.makeText(getApplicationContext(), "Test Msg from Haytham", Toast.LENGTH_SHORT).show();  //  C1S
@@ -392,17 +399,24 @@ public final class LiveViewActivity extends Activity {
         if (featureId == WindowUtils.FEATURE_VOICE_COMMANDS) {
             switch (item.getItemId()) {
 
-                case R.id.menu_calibrate: {
+                case R.id.menu_liveview_calibration_calibrate: {
                     mWifiService.GazeStream(HMGT, false);
                     mWifiService.Speek("Wait!");
                     mWifiService.write(MessageType.toHAYTHAM_Calibrate_Scene_4);
+                } break;
+                case R.id.menu_liveview_calibration_correctOffset:  {
+                    mWifiService.GazeStream(HMGT, false);
+                    mWifiService.Speek("Wait!");
+                    mWifiService.write(MessageType.toHAYTHAM_Calibrate_Scene_Correct);
 
-                }
-                break;
-                case R.id.menu_correctOffset: {
-                    mWifiService.Speek("This feature has not been implemented yet!");
-                }
-                break;
+                } break;
+                case R.id.menu_liveview_calibration_create:  {
+                    mWifiService.GazeStream(HMGT, false);
+                    mWifiService.Speek("Wait!");
+                    mWifiService.write(MessageType.toHAYTHAM_Calibrate_Scene_Master);
+
+                } break;
+
 
                 default:
                     return true;  // No change.

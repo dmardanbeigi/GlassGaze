@@ -34,7 +34,7 @@ public class PointerView_liveView extends RelativeLayout {
 
     // The drawable ids used to draw the user's three fingers.
     private static final int[] FINGER_RES_IDS = {
-            R.drawable.pointer0, R.drawable.pointer1 };
+            R.drawable.pointer0, R.drawable.pointer1,R.drawable.pointer_no_fill,R.drawable.pointer_no_fill,R.drawable.pointer_no_fill,R.drawable.pointer_no_fill};
 
     // The duration, in milliseconds, of the animation used to fade out a finger trace when the
     // user's finger is lifted from the touchpad.

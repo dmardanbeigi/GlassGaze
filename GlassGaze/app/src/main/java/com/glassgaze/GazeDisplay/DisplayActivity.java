@@ -219,6 +219,9 @@ public final class DisplayActivity extends Activity {
                         case MessageType.toGLASS_ERROR_NOTCalibrated:
                             mWifiService.Speek("Calibrate first!");
                             break;
+                        case MessageType.toGLASS_ERROR_MasterNOTFound:
+                            mWifiService.Speek("No Master calibration found!");
+                            break;
 
                         case MessageType.toGLASS_GAZE_RGT:
 
@@ -376,15 +379,27 @@ public final class DisplayActivity extends Activity {
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
         if (featureId == WindowUtils.FEATURE_VOICE_COMMANDS) {
             switch (item.getItemId()) {
-                case R.id.menu_calibrate: {
+                case R.id.menu_display_calibration_calibrate: {
                     mWifiService.GazeStream(RGT, false);
                     mWifiService.Speek("Wait!");
-                    mWifiService.write(MessageType.toHAYTHAM_Calibrate_Display_4);
+                    mWifiService.write(MessageType.toHAYTHAM_Calibrate_Display);
                 } break;
-                case R.id.menu_correctOffset:  {
+                case R.id.menu_display_calibration_correctOffset:  {
                     mWifiService.GazeStream(RGT, false);
                     mWifiService.Speek("Wait!");
                     mWifiService.write(MessageType.toHAYTHAM_Calibrate_Display_Correct);
+
+                } break;
+                case R.id.menu_display_calibration_create:  {
+                    mWifiService.GazeStream(RGT, false);
+                    mWifiService.Speek("Wait!");
+                    mWifiService.write(MessageType.toHAYTHAM_Calibrate_Display_Master);
+
+                } break;
+                case R.id.menu_display_calibration_reuse:  {
+                    mWifiService.GazeStream(RGT, false);
+                    mWifiService.Speek("Wait!");
+                    mWifiService.write(MessageType.toHAYTHAM_Calibrate_ReUse);
 
                 } break;
 

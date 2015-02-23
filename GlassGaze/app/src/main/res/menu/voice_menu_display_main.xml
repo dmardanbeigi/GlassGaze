@@ -15,16 +15,43 @@
 -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Menu item without a sub menu. -->
+
+    <!-- Menu item with a sub menu. -->
     <item
-        android:id="@+id/menu_calibrate"
-        android:title="@string/menu_calibrate_display"
-        />
-    <!-- Menu item without a sub menu. -->
-    <item
-        android:id="@+id/menu_correctOffset"
-        android:title="@string/menu_OnePoint_calibrate"
-        />
+        android:id="@+id/menu_display_calibration"
+        android:title="@string/menu_display_calibration_calibration">
+
+    <menu>
+            <item
+                android:id="@+id/menu_display_calibration_calibrate"
+                android:title="@string/menu_display_calibration_calibrate"
+                />
+            <item
+                android:id="@+id/menu_display_calibration_correctOffset"
+                android:title="@string/menu_display_calibration_correct"
+                />
+            <item
+                android:id="@+id/menu_display_calibration_master"
+                android:title="@string/menu_display_calibration_master">
+                <menu>
+                    <item
+                        android:id="@+id/menu_display_calibration_create"
+                        android:title="@string/menu_display_calibration_create"
+                        />
+                    <item
+                        android:id="@+id/menu_display_calibration_reuse"
+                        android:title="@string/menu_display_calibration_reuse"
+                        />
+
+
+                </menu>
+            </item>
+
+        </menu>
+    </item>
+
+
+
 
 
 </menu>

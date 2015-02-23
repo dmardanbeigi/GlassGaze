@@ -38,7 +38,8 @@ public class PointerView_display extends RelativeLayout {
             R.drawable.pointer1,
              R.drawable.pointer2,
              R.drawable.pointer3,
-             R.drawable.pointer4, 
+             R.drawable.pointer4,
+            R.drawable.pointer5,
             R.drawable.gaze_pointer,
 
 

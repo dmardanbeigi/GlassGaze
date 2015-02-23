@@ -420,16 +420,25 @@ private  void SetupView()
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
         if (featureId == WindowUtils.FEATURE_VOICE_COMMANDS) {
             switch (item.getItemId()) {
-                case R.id.menu_calibrate: {
-                    mWifiService.GazeStream(HMGT, false);
 
+                case R.id.menu_liveview_calibration_calibrate: {
+                    mWifiService.GazeStream(HMGT, false);
                     mWifiService.Speek("Wait!");
                     mWifiService.write(MessageType.toHAYTHAM_Calibrate_Scene_4);
+                } break;
+                case R.id.menu_liveview_calibration_correctOffset:  {
+                    mWifiService.GazeStream(HMGT, false);
+                    mWifiService.Speek("Wait!");
+                    mWifiService.write(MessageType.toHAYTHAM_Calibrate_Scene_Correct);
 
                 } break;
-                case R.id.menu_correctOffset:  {
-                    mWifiService.Speek("This feature has not been implemented yet!");
+                case R.id.menu_liveview_calibration_create:  {
+                    mWifiService.GazeStream(HMGT, false);
+                    mWifiService.Speek("Wait!");
+                    mWifiService.write(MessageType.toHAYTHAM_Calibrate_Scene_Master);
+
                 } break;
+
                 case R.id.menu_snapshot:
                 {
 

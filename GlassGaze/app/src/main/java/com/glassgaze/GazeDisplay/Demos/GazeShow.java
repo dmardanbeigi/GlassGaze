@@ -216,13 +216,26 @@ class IncomingHandler extends Handler {
                         if( showPointer )
                         {
 
-                            mPointerViewDisplay.GazeEvent(x, y, 0);
+                            mPointerViewDisplay.GazeEvent(x, y, 5);
                             mPointerViewDisplay.postInvalidate();
 
                         }
                         // if(cardSelected && mCardScroller.getSelectedItemId()==APP?) DO SOMETHING ELSE!;
 
 
+                        break;
+                    case MessageType.toGLASS_GAZE_RGT_2:
+
+                         x = Utils.GetX(readBuf);
+                         y = Utils.GetY(readBuf);
+
+                        if( showPointer )
+                        {
+
+                            mPointerViewDisplay.GazeEvent(x, y, 4);
+                            mPointerViewDisplay.postInvalidate();
+
+                        }
                         break;
                     default:
                         super.handleMessage(msg);
@@ -348,16 +361,27 @@ class IncomingHandler extends Handler {
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
         if (featureId == WindowUtils.FEATURE_VOICE_COMMANDS) {
             switch (item.getItemId()) {
-                case R.id.menu_calibrate: {
-                    mWifiService. GazeStream(RGT, false);
-
+                case R.id.menu_display_calibration_calibrate: {
+                    mWifiService.GazeStream(RGT, false);
                     mWifiService.Speek("Wait!");
-                    mWifiService.write(MessageType.toHAYTHAM_Calibrate_Display_4);
+                    mWifiService.write(MessageType.toHAYTHAM_Calibrate_Display);
                 } break;
-                case R.id.menu_correctOffset:  {
-                    mWifiService. GazeStream(RGT, false);
+                case R.id.menu_display_calibration_correctOffset:  {
+                    mWifiService.GazeStream(RGT, false);
                     mWifiService.Speek("Wait!");
                     mWifiService.write(MessageType.toHAYTHAM_Calibrate_Display_Correct);
+
+                } break;
+                case R.id.menu_display_calibration_create:  {
+                    mWifiService.GazeStream(RGT, false);
+                    mWifiService.Speek("Wait!");
+                    mWifiService.write(MessageType.toHAYTHAM_Calibrate_Display_Master);
+
+                } break;
+                case R.id.menu_display_calibration_reuse:  {
+                    mWifiService.GazeStream(RGT, false);
+                    mWifiService.Speek("Wait!");
+                    mWifiService.write(MessageType.toHAYTHAM_Calibrate_ReUse);
 
                 } break;
                 case R.id.menu_color_white:

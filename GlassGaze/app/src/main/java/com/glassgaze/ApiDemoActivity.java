@@ -21,6 +21,7 @@ import com.github.barcodeeye.scan.CaptureActivity;
 
 import com.glassgaze.GazeDisplay.DisplayActivity;
 
+
 import com.glassgaze.GazeLiveView.LiveViewActivity;
 import com.google.android.glass.app.Card;
 import com.google.android.glass.media.Sounds;
@@ -64,6 +65,8 @@ public class ApiDemoActivity extends Activity  {
     // Index of the cards.
     static final int DISPLAY = 0;
     static final int LIVEVIEW = 1;
+
+
     static final int EXIT = 2;
 
 
@@ -253,7 +256,6 @@ public class ApiDemoActivity extends Activity  {
                 .setImageLayout(Card.ImageLayout.LEFT)
                 .setText(R.string.text_LIVEVIEW));
 
-
         cards.add(EXIT, new Card(context).setText(R.string.text_EXIT));
 
 
@@ -371,6 +373,8 @@ public class ApiDemoActivity extends Activity  {
                     case LIVEVIEW:
                         startActivity(new Intent(ApiDemoActivity.this, LiveViewActivity.class));
                         break;
+
+
 
 
 

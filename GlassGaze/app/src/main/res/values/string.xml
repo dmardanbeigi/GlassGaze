@@ -86,7 +86,25 @@
     <string name="menu_coder5">Echo</string>
     <string name="menu_product">Pick a product manager</string>
 
-    <string name="menu_calibrate_display">Calibrate</string>
+
+    <string name="menu_display_calibration_calibration">Calibration</string>
+    <string name="menu_display_calibration_calibrate">Calibrate</string>
+    <string name="menu_display_calibration_correct">Correct offset</string>
+    <string name="menu_display_calibration_master">Master</string>
+    <string name="menu_display_calibration_create">Create</string>
+    <string name="menu_display_calibration_reuse">ReUse</string>
+
+    <string name="menu_liveview_calibration_calibration">Calibration</string>
+    <string name="menu_liveview_calibration_calibrate">Calibrate</string>
+    <string name="menu_liveview_calibration_correct">Correct offset</string>
+    <string name="menu_liveview_calibration_master">Master</string>
+    <string name="menu_liveview_calibration_create">Create</string>
+
+
+
+    <string name="menu_calibrate_display2">Display</string>
+    <string name="menu_calibrate_scene">Scene</string>
+    <string name="menu_calibrate_both">Both</string>
     <string name="menu_OnePoint_calibrate">Correct offset</string>
     <string name="menu_pointer_display">Pointer</string>
     <string name="menu_Background_Color">Background Color</string>
@@ -154,6 +172,8 @@
     <string name="setting">SETTING</string>
     <string name="text_DISPLAY">Gaze in Display</string>
     <string name="text_LIVEVIEW">Gaze in Liveview</string>
+    <string name="text_HYBRID">HybridGaze</string>
+
     <string name="text_EXIT">Exit</string>
 
 
