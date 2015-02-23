@@ -7,11 +7,21 @@ android {
     defaultConfig {
         applicationId "com.eye.itu.haytham.glassgaze"
         minSdkVersion 19
-        targetSdkVersion 20
+        targetSdkVersion 21
+        versionCode 1
+        versionName "1.0"
 
     }
-
-
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
 }
 dependencies {
     compile files('libs/zxing-core-2.3.jar')
