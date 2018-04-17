@@ -13,6 +13,7 @@ import java.util.List;
 public  class MyJsonClass {
 
     public String name="";
+    public String time="";
     public Bitmap img;
     public List<String> texts=new ArrayList<String>();
     public String text;

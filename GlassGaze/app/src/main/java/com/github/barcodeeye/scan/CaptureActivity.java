@@ -33,10 +33,11 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.glassgaze.R;
 import com.github.barcodeeye.BaseGlassActivity;
 //import com.github.barcodeeye.R;
 import com.glassgaze.Constants;
-import com.glassgaze.R;
+
 
 import com.github.barcodeeye.image.ImageManager;
 import com.github.barcodeeye.migrated.AmbientLightManager;

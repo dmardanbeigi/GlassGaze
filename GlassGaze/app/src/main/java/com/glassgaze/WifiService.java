@@ -15,6 +15,7 @@ import android.os.RemoteException;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 
+import com.glassgaze.R;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
@@ -83,7 +84,7 @@ public class WifiService extends Service {
     static final int HMGT = 0;
     static final int RGT = 1;
 
-    public int backgroundColor=R.color.background_color;
+    public int backgroundColor= R.color.background_color;
 
     public String myIP="";
     public int myIP_int;
@@ -782,7 +783,27 @@ try {
             }
 
         }
+        public void write(String msg) {
 
+            try {
+
+                byte[] buffer = new byte[Constants.MSG_SIZE];
+                byte[] array = msg.getBytes();
+                if (array.length > buffer.length || array.length < 1) {
+//Not acceptable!! don't send
+                } else {    //Converting all msgs to 9 bytes array
+                    java.lang.System.arraycopy(array, 0, buffer, 0, array.length);
+                    mmOutStream.write(buffer);
+                    mmOutStream.flush();
+                }
+
+
+            } catch (IOException e) {
+                Log.e(TAG, "Exception during write", e);
+                cancel();
+            }
+
+        }
         public void WriteUDP(String msg)
         {
 
@@ -828,29 +849,9 @@ try {
         }
 */
 
-/*
-        public void write(String msg) {
-
-            try {
-
-                byte[] buffer = new byte[Constants.MSG_SIZE];
-                byte[] array = msg.getBytes();
-                if (array.length > buffer.length || array.length < 1) {
-//Not acceptable!! don't send
-                } else {    //Converting all msgs to 9 bytes array
-                    java.lang.System.arraycopy(array, 0, buffer, 0, array.length);
-                    mmOutStream.write(buffer);
-                    mmOutStream.flush();
-                }
 
 
-            } catch (IOException e) {
-                Log.e(TAG, "Exception during write", e);
-                cancel();
-            }
 
-        }
-*/
 
 
         public void sendPhoto( byte[] payload){

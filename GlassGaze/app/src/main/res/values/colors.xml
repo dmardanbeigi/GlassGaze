@@ -15,7 +15,7 @@
 -->
 
 <resources>
-
+    <color name="background">#000000</color>
     <color name="background_color">#000000</color>
     <color name="divider_color">#444444</color>
 

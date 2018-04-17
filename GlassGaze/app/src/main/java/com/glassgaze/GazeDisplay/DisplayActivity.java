@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.glassgaze.GazeDisplay.Demos.GazeShow;
 
 import com.glassgaze.GazeDisplay.Demos.SimpleGazeList.GazeListActivity;
+import com.glassgaze.GazeDisplay.Demos.metaio.SplashActivity;
 import com.google.android.glass.app.Card;
 import com.google.android.glass.media.Sounds;
 
@@ -56,13 +57,13 @@ public final class DisplayActivity extends Activity {
     // Index of the cards.
    static final int GAZESHOW = 1;
        static final int GAZELIST =2;
-
-    static final int MOREDEMOS =3;
+    static final int METAIO =3;
+    static final int MOREDEMOS =4;
 
 
 
     static final int RGT = 1;
-    static final int CALIB = 1;
+    static final int CALIB_Display = 1;
 
 
     private boolean mVoiceMenuEnabled = true;
@@ -205,7 +206,7 @@ public final class DisplayActivity extends Activity {
 
 
                                 Intent i = new Intent(DisplayActivity.this, Calibration.class);
-                                startActivityForResult(i,CALIB);
+                                startActivityForResult(i,CALIB_Display);
 
 
                             }
@@ -241,7 +242,7 @@ public final class DisplayActivity extends Activity {
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode == CALIB) {
+        if (requestCode == CALIB_Display) {
             if(resultCode == RESULT_OK){
                 //String result=data.getStringExtra("result");
             }
@@ -390,17 +391,11 @@ public final class DisplayActivity extends Activity {
                     mWifiService.write(MessageType.toHAYTHAM_Calibrate_Display_Correct);
 
                 } break;
-                case R.id.menu_display_calibration_create:  {
-                    mWifiService.GazeStream(RGT, false);
-                    mWifiService.Speek("Wait!");
-                    mWifiService.write(MessageType.toHAYTHAM_Calibrate_Display_Master);
 
-                } break;
-                case R.id.menu_display_calibration_reuse:  {
+                case R.id.menu_calibration_reuse: {
                     mWifiService.GazeStream(RGT, false);
                     mWifiService.Speek("Wait!");
                     mWifiService.write(MessageType.toHAYTHAM_Calibrate_ReUse);
-
                 } break;
 
                 default: return true;  // No change.
@@ -431,6 +426,12 @@ public final class DisplayActivity extends Activity {
                 .addImage(getImageResource(GAZELIST))
                 .setImageLayout(Card.ImageLayout.LEFT)
                 .setText(R.string.text_displayGaze_gazelist));
+
+        cards.add(METAIO, new Card(context)
+                .addImage(getImageResource(METAIO))
+                .setImageLayout(Card.ImageLayout.LEFT)
+                .setText("Metaio demos"));
+
 
 
         cards.add(MOREDEMOS,new Card(context).setText(R.string.text_MOREDEMOS));
@@ -467,7 +468,7 @@ public final class DisplayActivity extends Activity {
                         am.playSoundEffect( Sounds.TAP);
                         startActivity(new Intent(DisplayActivity.this, GazeShow.class));
                         break;
-                        
+
 
                     case GAZELIST:
 
@@ -502,8 +503,15 @@ public final class DisplayActivity extends Activity {
 
                         break;
 
-                    case MOREDEMOS:
+                    case METAIO:
+                        am.playSoundEffect( Sounds.TAP);
+                        startActivity(new Intent(DisplayActivity.this, SplashActivity.class));
                         break;
+                    case MOREDEMOS:
+
+                        break;
+
+
                     default:
 
                         Log.d(TAG, "Don't show anything");

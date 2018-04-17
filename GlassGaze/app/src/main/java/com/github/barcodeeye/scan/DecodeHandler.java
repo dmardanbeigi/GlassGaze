@@ -26,6 +26,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
+
 import com.glassgaze.R;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.DecodeHintType;

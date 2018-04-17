@@ -5,7 +5,7 @@ android {
     buildToolsVersion "21.1.2"
 
     defaultConfig {
-        applicationId "com.eye.itu.haytham.glassgaze"
+        applicationId "com.glassgaze"
         minSdkVersion 19
         targetSdkVersion 21
         versionCode 1
@@ -23,10 +23,12 @@ android {
         }
     }
 }
+
 dependencies {
     compile files('libs/zxing-core-2.3.jar')
     //compile 'com.android.support:appcompat-v7:20.+'
     compile 'com.android.support:support-v4:21.0.2'
+    compile project(':metaioSDK')
 }
 
 ///.....................................used for Server test

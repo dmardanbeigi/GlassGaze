@@ -39,7 +39,6 @@ public class Calibration extends Activity {
     static final int HMGT = 0;
     static final int RGT = 1;
     PointerView_display mPointerViewDisplay;
-    private Boolean showPointer=false;
 
     /**
      * Messenger used for receiving responses from service.
@@ -95,12 +94,15 @@ init();
 private void init()
 {
     if (mWifiService.mState==mWifiService.STATE_CONNECTED) {
+        //just in case gaze stream is not disabled before calling this activity
+        mWifiService. GazeStream(RGT,false);
+        mWifiService. GazeStream(HMGT,false);
+
         mWifiService.Speek("OK, Follow the white circle");
 
         mPointerViewDisplay.GazeEvent(320, 180, 1);
-        mWifiService.write(MessageType.toHAYTHAM_READY);
-        mWifiService. GazeStream(RGT,false);
-        mWifiService. GazeStream(HMGT,false);
+
+
     }
 }
     //......................WIFI SERVICE
@@ -160,6 +162,7 @@ private void init()
 
                     switch (Utils.GetIndicator(readBuf)) {
                         case MessageType.toGLASS_Calibrate_Display:
+                            AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
 
                             int x0 = Utils.GetX(readBuf);
@@ -177,6 +180,8 @@ private void init()
                             }
                            else
                             {
+                                am.playSoundEffect(Sounds.SELECTED);
+
                                 mPointerViewDisplay.GazeEvent(x0, y0, 1);
                                 mWifiService.write(MessageType.toHAYTHAM_READY);
                             }
@@ -193,19 +198,8 @@ private void init()
                             Cancel();
                         }
                             break;
-                        case MessageType.toGLASS_GAZE_RGT:
-
-                            int x = Utils.GetX(readBuf);
-                            int y = Utils.GetY(readBuf);
 
 
-                            if( showPointer )
-                            {
-
-                                mPointerViewDisplay.GazeEvent(x, y, 0);
-                                mPointerViewDisplay.postInvalidate();
-
-                            }
                         default:
                             super.handleMessage(msg);
                     }
@@ -244,8 +238,7 @@ private void Done(){
             mPointerViewDisplay = (PointerView_display) findViewById(R.id.pointerView_display);
             mPointerViewDisplay.setBackgroundColor(Color.BLACK);
 
-            showPointer=true;
-            mWifiService.GazeStream(RGT,true);
+
             finish();
         }
     }, 1000);
@@ -254,14 +247,14 @@ private void Done(){
 
 }
     private void Cancel() {
-        if (!showPointer) {
+
             Intent returnIntent = new Intent();
             setResult(RESULT_CANCELED, returnIntent);
 
             AudioManager audio = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
             audio.playSoundEffect(Sounds.ERROR);
             Toast.makeText(getApplicationContext(), "Try again", Toast.LENGTH_LONG).show();
-        }
+
         finish();
     }
 

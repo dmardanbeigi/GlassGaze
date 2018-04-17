@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.glassgaze.R;
+
 
 public class AppViewer extends FrameLayout {
     public AppViewer(Context context) {

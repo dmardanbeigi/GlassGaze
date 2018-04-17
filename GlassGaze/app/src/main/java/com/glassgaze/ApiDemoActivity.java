@@ -16,12 +16,12 @@
 
 package com.glassgaze;
 
+import com.glassgaze.EXPERIMENT.Activity_CalibEX;
+import com.glassgaze.GazeDisplay.Demos.metaio.SplashActivity;
 import com.github.barcodeeye.scan.CaptureActivity;
 
 
 import com.glassgaze.GazeDisplay.DisplayActivity;
-
-
 import com.glassgaze.GazeLiveView.LiveViewActivity;
 import com.google.android.glass.app.Card;
 import com.google.android.glass.media.Sounds;
@@ -65,9 +65,10 @@ public class ApiDemoActivity extends Activity  {
     // Index of the cards.
     static final int DISPLAY = 0;
     static final int LIVEVIEW = 1;
+    static final int EXPERIMENT = 2;
 
 
-    static final int EXIT = 2;
+    static final int EXIT = 3;
 
 
 
@@ -256,6 +257,8 @@ public class ApiDemoActivity extends Activity  {
                 .setImageLayout(Card.ImageLayout.LEFT)
                 .setText(R.string.text_LIVEVIEW));
 
+        cards.add(EXPERIMENT, new Card(context).setText("Calibration Experiment"));
+
         cards.add(EXIT, new Card(context).setText(R.string.text_EXIT));
 
 
@@ -369,12 +372,17 @@ public class ApiDemoActivity extends Activity  {
                     case DISPLAY:
                         startActivity(new Intent(ApiDemoActivity.this, DisplayActivity.class));
 
+
+
+
                         break;
                     case LIVEVIEW:
                         startActivity(new Intent(ApiDemoActivity.this, LiveViewActivity.class));
                         break;
 
-
+                    case EXPERIMENT:
+                        startActivity(new Intent(ApiDemoActivity.this, Activity_CalibEX.class));
+                        break;
 
 
 

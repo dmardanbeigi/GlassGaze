@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="homePageButton" type="id"/>
+    <item name="imageButton" type="id"/>
+    <item name="audioButton" type="id"/>
+    <item name="videoButton" type="id"/>
+    <item name="routeButton" type="id"/>
+    <item name="callButton" type="id"/>
+    <item name="emailButton" type="id"/>
+
+    <string name="metaioSDKSignature">K+YrliH/z5p7WQyZoOlSX0f4OIozuWgoJB6jA05UvEE=</string>
+
+</resources>

@@ -30,14 +30,44 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+<!-- used for Junaio -->
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
-    <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.location.gps"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.sensor.accelerometer"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.sensor.compass"
+        android:required="true" />
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
+    <supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:smallScreens="true"
+        android:xlargeScreens="true" />
 
-    <application>
+
+
+    <application
+        android:label="@string/app_name" > <!-- For using textureview -->
+
+
+
         <activity
             android:name=".ApiDemoActivity"
             android:exported="true"
@@ -46,14 +76,9 @@
             android:label="@string/app_name" > <!-- For using textureview -->
 
 
-            <!--
-            <intent-filter>
-                <action android:name="com.google.android.glass.action.VOICE_TRIGGER" />
-            </intent-filter>
-            <meta-data android:name="com.google.android.glass.VoiceTrigger"
-                android:resource="@xml/voice_trigger"
-                />
-            -->
+            <uses-library
+                android:name="com.google.android.maps"
+                android:required="false" />
         </activity>
 
         <service
@@ -103,6 +128,15 @@
         <activity
             android:name=".GazeLiveView.Calibration_offset"
             android:exported="true" />
+        <activity
+            android:name=".EXPERIMENT.Activity_CalibEX"
+            android:exported="true" />
+
+        <activity
+            android:name=".EXPERIMENT.Sampling_Scene"
+            android:exported="true" />
+
+
         <service
             android:name=".WifiService"
             android:enabled="true"
@@ -131,6 +165,36 @@
             android:stateNotNeeded="true"
             android:theme="@style/CaptureTheme"
             android:windowSoftInputMode="stateAlwaysHidden" >
+        </activity>
+
+
+
+        <!-- Junaio Start screen -->
+        <activity
+            android:name=".GazeDisplay.Demos.metaio.SplashActivity"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Fullscreen" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <!-- Junaio cloud plugin AR view activity -->
+        <activity
+            android:name=".GazeDisplay.Demos.metaio.MainActivity"
+            android:label="@string/app_name"
+            android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen"
+            android:screenOrientation="fullSensor"
+            android:theme="@style/Theme.Live" >
+        </activity>
+        <activity
+            android:name="com.metaio.cloud.plugin.view.POIDetailDialog"
+            android:theme="@style/Theme.POIDialog" >
+        </activity>
+        <activity
+            android:name="com.metaio.cloud.plugin.view.WebViewActivity"
+            android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen"
+            android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
 
     </application>

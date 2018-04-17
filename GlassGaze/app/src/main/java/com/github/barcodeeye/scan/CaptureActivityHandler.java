@@ -31,6 +31,7 @@ import android.provider.Browser;
 import android.util.Log;
 
 //import com.github.barcodeeye.R;
+
 import com.glassgaze.R;
 import com.github.barcodeeye.scan.ui.ViewfinderView.ViewfinderResultPointCallback;
 import com.google.zxing.BarcodeFormat;

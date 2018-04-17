@@ -25,6 +25,7 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
 
+
 import com.glassgaze.R;
 import com.google.zxing.ResultPoint;
 import com.google.zxing.ResultPointCallback;

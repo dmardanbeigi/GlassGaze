@@ -19,7 +19,7 @@ public class Constants {
 
       public static Boolean QRcode_Scan=true;
 
-      public static String directServerIP= "10.0.0.16";
+      public static String directServerIP= "192.168.0.101";
 
     public static final int  display_W=640;
     public static final int  display_H = 360;

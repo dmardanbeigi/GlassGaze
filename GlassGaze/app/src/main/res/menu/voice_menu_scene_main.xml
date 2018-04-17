@@ -15,36 +15,17 @@
 -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Menu item with a sub menu. -->
+
+
     <item
-        android:id="@+id/menu_calibration"
-        android:title="@string/menu_liveview_calibration_calibration">
+        android:id="@+id/menu_liveview_calibration_calibrate"
+        android:title="@string/menu_liveview_calibration_calibrate">
 
-        <menu>
-            <item
-                android:id="@+id/menu_liveview_calibration_calibrate"
-                android:title="@string/menu_liveview_calibration_calibrate"
-                />
-            <item
-                android:id="@+id/menu_liveview_calibration_correctOffset"
-                android:title="@string/menu_liveview_calibration_correct"
-                />
-            <item
-                android:id="@+id/menu_liveview_calibration_master"
-                android:title="@string/menu_liveview_calibration_master">
-                <menu>
-                    <item
-                        android:id="@+id/menu_liveview_calibration_create"
-                        android:title="@string/menu_liveview_calibration_create"
-                        />
-              
+        </item>
 
-
-                </menu>
-            </item>
-
-        </menu>
-    </item>
-
+    <item
+        android:id="@+id/menu_calibration_reuse"
+        android:title="@string/menu_calibration_reuse"
+        />
 
 </menu>

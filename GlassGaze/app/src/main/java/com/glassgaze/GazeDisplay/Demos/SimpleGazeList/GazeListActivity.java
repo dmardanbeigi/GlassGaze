@@ -245,8 +245,11 @@ class IncomingHandler extends Handler {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == CALIB) {
+
             if(resultCode == RESULT_OK){
                 //String result=data.getStringExtra("result");
+
+                mWifiService.GazeStream(RGT,true);
             }
             if (resultCode == RESULT_CANCELED) {
                 //Write your code if there's no result

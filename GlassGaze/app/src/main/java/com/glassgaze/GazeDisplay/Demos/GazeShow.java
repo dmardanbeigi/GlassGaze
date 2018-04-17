@@ -224,19 +224,7 @@ class IncomingHandler extends Handler {
 
 
                         break;
-                    case MessageType.toGLASS_GAZE_RGT_2:
 
-                         x = Utils.GetX(readBuf);
-                         y = Utils.GetY(readBuf);
-
-                        if( showPointer )
-                        {
-
-                            mPointerViewDisplay.GazeEvent(x, y, 4);
-                            mPointerViewDisplay.postInvalidate();
-
-                        }
-                        break;
                     default:
                         super.handleMessage(msg);
                 }
@@ -372,13 +360,8 @@ class IncomingHandler extends Handler {
                     mWifiService.write(MessageType.toHAYTHAM_Calibrate_Display_Correct);
 
                 } break;
-                case R.id.menu_display_calibration_create:  {
-                    mWifiService.GazeStream(RGT, false);
-                    mWifiService.Speek("Wait!");
-                    mWifiService.write(MessageType.toHAYTHAM_Calibrate_Display_Master);
 
-                } break;
-                case R.id.menu_display_calibration_reuse:  {
+                case R.id.menu_calibration_reuse:  {
                     mWifiService.GazeStream(RGT, false);
                     mWifiService.Speek("Wait!");
                     mWifiService.write(MessageType.toHAYTHAM_Calibrate_ReUse);

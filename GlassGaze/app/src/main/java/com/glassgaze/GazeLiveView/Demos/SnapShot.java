@@ -58,6 +58,8 @@ public class SnapShot extends Activity{
 
     static final int HMGT = 0;
     static final int RGT = 1;
+    static final int CALIB_Scene = 2;
+    static final int CALIB_Display = 1;
 
     PointerView_display mPointerViewDisplay;
 
@@ -199,6 +201,24 @@ class IncomingHandler extends Handler {
                 byte[] readBuf = (byte[]) msg.obj;
 
                 switch (Utils.GetIndicator(readBuf)) {
+                    case MessageType.toGLASS_Calibrate_Display:
+
+
+                        int x0 = Utils.GetX(readBuf);
+                        int y0 = Utils.GetY(readBuf);
+
+                        if ((x0==-1 && y0==-1)||(x0==-3 && y0==-3) )//calibrate or correct offset
+                        {
+
+
+                            Intent i = new Intent(SnapShot.this, com.glassgaze.GazeDisplay.Calibration.class);
+                            startActivityForResult(i,CALIB_Display);
+
+
+                        }
+
+                        break;
+
                     case MessageType.toGLASS_Calibrate_Scene:
 
 
@@ -211,7 +231,7 @@ class IncomingHandler extends Handler {
                             preview.removeAllViews();
 
                             Intent i = new Intent(SnapShot.this, com.glassgaze.GazeLiveView.Calibration.class);
-                            startActivityForResult(i, 1);
+                            startActivityForResult(i, CALIB_Scene);
 
 
                         }
@@ -257,18 +277,17 @@ class IncomingHandler extends Handler {
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode == 1) {
-            if(resultCode == RESULT_OK){
 
+
+
+
+        if (requestCode == CALIB_Scene) {
+            if(resultCode == RESULT_OK){
                 //String result=data.getStringExtra("result");
             }
             if (resultCode == RESULT_CANCELED) {
-
                 //Write your code if there's no result
-
-
             }
-
             new Handler().postDelayed(new Runnable()
             {
                 public void run()
@@ -277,8 +296,14 @@ class IncomingHandler extends Handler {
                     SetupView();
                 }
             }, 2000);
-
-
+        }
+        else if (requestCode == CALIB_Display) {
+            if(resultCode == RESULT_OK){
+                //String result=data.getStringExtra("result");
+            }
+            if (resultCode == RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
 
         }
     }//onActivityResult
@@ -424,19 +449,14 @@ private  void SetupView()
                 case R.id.menu_liveview_calibration_calibrate: {
                     mWifiService.GazeStream(HMGT, false);
                     mWifiService.Speek("Wait!");
-                    mWifiService.write(MessageType.toHAYTHAM_Calibrate_Scene_4);
+                    mWifiService.write(MessageType.toHAYTHAM_Calibrate_Scene);
                 } break;
-                case R.id.menu_liveview_calibration_correctOffset:  {
+
+                case R.id.menu_calibration_reuse: {
+
                     mWifiService.GazeStream(HMGT, false);
                     mWifiService.Speek("Wait!");
-                    mWifiService.write(MessageType.toHAYTHAM_Calibrate_Scene_Correct);
-
-                } break;
-                case R.id.menu_liveview_calibration_create:  {
-                    mWifiService.GazeStream(HMGT, false);
-                    mWifiService.Speek("Wait!");
-                    mWifiService.write(MessageType.toHAYTHAM_Calibrate_Scene_Master);
-
+                    mWifiService.write(MessageType.toHAYTHAM_Calibrate_ReUse);
                 } break;
 
                 case R.id.menu_snapshot:

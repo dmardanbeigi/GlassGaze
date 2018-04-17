@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="metaiosdk">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/metaioSDK/libs/metaiosdk.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

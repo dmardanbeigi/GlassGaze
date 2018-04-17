@@ -16,25 +16,27 @@
 
 <resources>
 
-
-
-    <string name="intro_message">
-        <![CDATA[
-               Look and tap!
- ]]>
-    </string>
-
-
-
-
-
-
-
-
-
-    <!-- The voice trigger used for launching general demos. -->
-    <string name="voice_trigger">GlassGaze</string>
     <string name="app_name">GlassGaze</string>
+    <string name="metaioSDKSignature">K+YrliH/z5p7WQyZoOlSX0f4OIozuWgoJB6jA05UvEE=</string>
+
+
+
+     <string name="intro_message">
+         <![CDATA[
+                Look and tap!
+  ]]>
+     </string>
+
+
+
+
+
+
+
+
+
+     <!-- The voice trigger used for launching general demos. -->
+    <string name="voice_trigger">GlassGaze</string>
 
     <!-- Used for api cards to describe which API example will be triggered. -->
     <string name="text_cards">Card API examples</string>
@@ -92,7 +94,8 @@
     <string name="menu_display_calibration_correct">Correct offset</string>
     <string name="menu_display_calibration_master">Master</string>
     <string name="menu_display_calibration_create">Create</string>
-    <string name="menu_display_calibration_reuse">ReUse</string>
+    <string name="menu_calibration_reuse">ReUse</string>
+
 
     <string name="menu_liveview_calibration_calibration">Calibration</string>
     <string name="menu_liveview_calibration_calibrate">Calibrate</string>
@@ -118,8 +121,17 @@
     <string name="menu_pointer_show">Show pointer</string>
     <string name="menu_pointer_hide">Hide pointer</string>
 
+
     <string name="menu_snapshot">Snapshot</string>
     <string name="menu_viewfinder">Show viewfinder</string>
+
+
+    <string name="menu_exp_calibration">Calibration</string>
+    <string name="menu_exp_calibration_display">Display</string>
+    <string name="menu_exp_calibration_scene">Scene</string>
+    <string name="menu_exp_start">Start Experiment</string>
+
+
 
 
     <string name="text_MOREDEMOS">
@@ -138,6 +150,10 @@
        <string name="text_displayGaze_gazelist">
        Look at the item you want to select and tap!
     </string>
+
+
+
+
         <string name="text_displayGaze_magicpointing">
        Magic pointing!
     </string>

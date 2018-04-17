@@ -13,6 +13,8 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.glassgaze.R;
+
 public class SliderView extends FrameLayout
 {
     private float animatedCount = 0.0F;

@@ -45,17 +45,13 @@ public class Calibration extends Activity {
     private long tempTotal = 5000;
 
 
-
-    int currentPhoto=0;
+    int currentPhoto = 0;
     int totalPhotosNeeded;
 
     FrameLayout preview;
 
     static final int HMGT = 0;
     static final int RGT = 1;
-
-
-
 
 
     /**
@@ -75,16 +71,15 @@ public class Calibration extends Activity {
     private boolean mBounded;
 
 
-
     private ServiceConnection mConnection = new ServiceConnection() {
 
-        public void onServiceConnected(ComponentName className,IBinder binder) {
+        public void onServiceConnected(ComponentName className, IBinder binder) {
 
             Log.d("MessengerActivity", "Connected to service. Registering our Messenger in the Service...");
 
             WifiService.MyBinder b = (WifiService.MyBinder) binder;
             mWifiService = b.getService();
-            mService =  mWifiService.mMessenger;
+            mService = mWifiService.mMessenger;
             //mService = new Messenger(binder);
             mBounded = true;
 
@@ -100,27 +95,27 @@ public class Calibration extends Activity {
             }
 
 
-
             init();
 
         }
+
         public void onServiceDisconnected(ComponentName className) {
             Toast.makeText(Calibration.this, "Service is disconnected", Toast.LENGTH_SHORT).show();
             mBounded = false;
             mWifiService = null;
         }
     };
-    private void init()
-    {
-        if (mWifiService.mState==mWifiService.STATE_CONNECTED) {
+
+    private void init() {
+        if (mWifiService.mState == mWifiService.STATE_CONNECTED) {
 
             Toast.makeText(getApplicationContext(), "Stand in front of the calibration board", Toast.LENGTH_LONG).show(); //"M2
             mWifiService.Speek("Stand in front of the calibration board");
             startCountDownTimer();
             waitForYesNo = true;
 
-            mWifiService. GazeStream(RGT,false);
-            mWifiService. GazeStream(HMGT,false);
+            mWifiService.GazeStream(RGT, false);
+            mWifiService.GazeStream(HMGT, false);
 
         }
     }
@@ -148,7 +143,7 @@ public class Calibration extends Activity {
                     Toast.makeText(Calibration.this, "Photo not sent properly!", Toast.LENGTH_SHORT).show();
 
 
-                    }
+                }
 
                 break;
                 case WifiService.MESSAGE_TYPE_TEXT: {
@@ -186,12 +181,17 @@ public class Calibration extends Activity {
 
 
                 case MessageType.MESSAGE_TOAST:
-                    Toast.makeText(getApplicationContext(), msg.getData().getString(Constants.TOAST),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), msg.getData().getString(Constants.TOAST), Toast.LENGTH_SHORT).show();
                     break;
 
                 case MessageType.MESSAGE_READ:
 
                     byte[] readBuf = (byte[]) msg.obj;
+
+
+                    //debug:
+                    Log.i("Calibration_Scene ", String.valueOf(Utils.GetIndicator(readBuf)) );
+
 
                     switch (Utils.GetIndicator(readBuf)) {
                         case MessageType.toGLASS_Calibrate_Scene:
@@ -202,32 +202,34 @@ public class Calibration extends Activity {
                             if (x0 == -2 && y0 == -2) {
 
 
-
                                 Done();
-                            }
-                            else if (x0 == -3 && y0 == -3) {
+                            } else if (x0 == -3 && y0 == -3) {
 
                                 Cancel();
 
 
-                            } else if (x0 == -4 && y0 == -4) {//look at the next target
-                                int tmp = (currentPhoto + 1);
-                                //look at the next target
-                                mWifiService.Speek("keep your head still and Look at target number " + tmp);
+                            } else if (x0 == -5 && y0 == -5) {
 
-                            } else if (x0 == -5 && y0 == -5) {//look at the next target
 
-                                //look at the next target
                                 mWifiService.Speek("Look at target number " + currentPhoto + " again!");
+                                mWifiService.write(MessageType.toHAYTHAM_READY);
+                            } else if (x0 == -1 && y0 == -1) {//take photo
 
-                            } else {//set current point and Take picture
 
-
-                                totalPhotosNeeded = y0;
-                                currentPhoto = x0;
                                 cameraView.camera.takePicture(null, null, new PhotoHandler(getApplicationContext(), mHandler));
 
 
+                            } else {
+
+                                currentPhoto = y0 + 1;
+
+                                if (x0 == 0)//first point
+                                {
+                                    mWifiService.Speek("Ok. Look at target number " + currentPhoto);
+                                } else {
+                                    mWifiService.Speek("number " + currentPhoto);
+                                }
+                                mWifiService.write(MessageType.toHAYTHAM_READY);
                             }
 
 
@@ -241,7 +243,7 @@ public class Calibration extends Activity {
                             mWifiService.Speek("Calibrate first!");
                             Cancel();
                         }
-                            break;
+                        break;
 
                         default:
                             super.handleMessage(msg);
@@ -261,10 +263,10 @@ public class Calibration extends Activity {
 
             switch (msg.what) {
 
-                case  MessageType.PHOTO_READY:
+                case MessageType.PHOTO_READY:
                     mWifiService.sendPhoto((byte[]) msg.obj);
 
-                            RestartCameraView();
+                    RestartCameraView();
                     break;
             }
         }
@@ -292,44 +294,42 @@ public class Calibration extends Activity {
     }
 
 
-private void Done(){
+    private void Done() {
  /*   Intent returnIntent = new Intent();
     returnIntent.putExtra("result",result);
     setResult(RESULT_OK,returnIntent);
     finish();*/
 
-    finish();
+
+        AudioManager audio = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        audio.playSoundEffect(Sounds.SUCCESS);
+        //((TextView)findViewById(R.id.label)).setText(getString(R.string.deleted_label));
+
+
+        Intent returnIntent = new Intent();
+        setResult(RESULT_OK, returnIntent);
 
 
 
-    AudioManager audio = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
-    audio.playSoundEffect(Sounds.SUCCESS);
-
-    setContentView(R.layout.menu_layout);
-    ((ImageView)findViewById(R.id.icon)).setImageResource(R.drawable.ic_done_50);
-    //((TextView)findViewById(R.id.label)).setText(getString(R.string.deleted_label));
-
-
-
-
-            Intent returnIntent = new Intent();
-            setResult(RESULT_OK, returnIntent);
-
-
-}
-    private void Cancel(){
-        waitForYesNo=false;
         finish();
 
 
-        AudioManager audio = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+
+    }
+
+    private void Cancel() {
+        waitForYesNo = false;
+
+
+        AudioManager audio = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         audio.playSoundEffect(Sounds.ERROR);
 
 
-         Intent returnIntent = new Intent();
-         setResult(RESULT_CANCELED, returnIntent);
+        Intent returnIntent = new Intent();
+        setResult(RESULT_CANCELED, returnIntent);
 
 
+        finish();
     }
 
     @Override
@@ -365,15 +365,17 @@ private void Done(){
     }
 
 
-
     //...................................................
     @Override
-    protected void onDestroy(){
-        waitForYesNo=false;
+    protected void onDestroy() {
+        waitForYesNo = false;
+
         cameraView.releaseCamera();
         preview.removeAllViews();
 
-        if(mBounded) {
+
+
+        if (mBounded) {
             unbindService(mConnection);
             mBounded = false;
         }
@@ -384,8 +386,8 @@ private void Done(){
 
     @Override
     protected void onStart() {
-        Intent intent= new Intent(this, WifiService.class);
-        bindService(intent, mConnection,Context.BIND_AUTO_CREATE);
+        Intent intent = new Intent(this, WifiService.class);
+        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
 
         super.onStart();
 
@@ -395,8 +397,8 @@ private void Done(){
     @Override
     protected void onResume() {
 
-        Intent intent= new Intent(this, WifiService.class);
-        bindService(intent, mConnection,Context.BIND_AUTO_CREATE);
+        Intent intent = new Intent(this, WifiService.class);
+        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
         super.onResume();
 
 
@@ -404,17 +406,18 @@ private void Done(){
 
     @Override
     protected void onStop() {
-        if(mBounded) {
+        if (mBounded) {
             unbindService(mConnection);
             mBounded = false;
         }
         super.onStop();
 
     }
+
     @Override
     protected void onPause() {
 
-        if(mBounded) {
+        if (mBounded) {
             unbindService(mConnection);
             mBounded = false;
         }
@@ -432,14 +435,14 @@ private void Done(){
 
     }
 
-    private void ShowCameraView(){
+    private void ShowCameraView() {
 
         //preview.setVisibility(View.VISIBLE);
         cameraView.setVisibility(View.VISIBLE);
     }
 
 
-    private void HideCameraView(){
+    private void HideCameraView() {
 
         preview.setVisibility(View.INVISIBLE);
 
@@ -450,7 +453,7 @@ private void Done(){
 
     private GestureDetector createGestureDetector(Context context) {
         GestureDetector gestureDetector = new GestureDetector(context);
-        gestureDetector.setBaseListener( new GestureDetector.BaseListener() {
+        gestureDetector.setBaseListener(new GestureDetector.BaseListener() {
             @Override
             public boolean onGesture(Gesture gesture) {
                 if (gesture == Gesture.LONG_PRESS || gesture == Gesture.TAP) {
@@ -461,21 +464,19 @@ private void Done(){
 
                         HideCameraView();
 
-                        mWifiService.Speek("OK, Look at the first target");
 
-                        mWifiService.write(MessageType.toHAYTHAM_SceneCalibrationReady);
+                        mWifiService.write(MessageType.toHAYTHAM_SceneCalibration_Start);
 
 
                         waitForYesNo = false;
                         return true;
                     }
+                } else if (gesture == Gesture.SWIPE_DOWN) {
+
+                    Cancel();
+
+                    return true;
                 }
-               else if (gesture == Gesture.SWIPE_DOWN ) {
-
-                        Cancel();
-
-                        return true;
-                    }
                 return false;
             }
         });
@@ -484,10 +485,8 @@ private void Done(){
 
 
     @Override
-    public boolean onGenericMotionEvent(MotionEvent event)
-    {
-        if (mGestureDetector != null)
-        {
+    public boolean onGenericMotionEvent(MotionEvent event) {
+        if (mGestureDetector != null) {
             return mGestureDetector.onMotionEvent(event);
         }
 

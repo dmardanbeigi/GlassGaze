@@ -25,6 +25,7 @@ import android.content.Context;
 import android.text.Html;
 import android.widget.TextView;
 
+
 import com.glassgaze.R;
 import com.github.barcodeeye.migrated.HttpHelper;
 import com.github.barcodeeye.migrated.LocaleManager;

@@ -47,18 +47,20 @@ public class MessageType {
     public static final int toHAYTHAM_Calibrate_Display = 1005;
     public static final int toHAYTHAM_Calibrate_Display_Correct = 1006;
 
-    public static final int toHAYTHAM_Calibrate_Scene_4 =1007;
+    public static final int toHAYTHAM_Calibrate_Scene =1007;
+
+
     public static final int toHAYTHAM_Calibrate_Scene_Correct = 1008;
 
     public static final int toHAYTHAM_SnapshotComming = 1009;
-    public static final int toHAYTHAM_SceneCalibrationReady =1010;
+    public static final int toHAYTHAM_SceneCalibration_Start =1010;
     public  static final int toHAYTHAM_HeadderComming=1011;
     public  static final int toHAYTHAM_Calibrate_Display_Finished=1012;
     public static final int toHAYTHAM_JsonComming = 1013;
 
-    public static final int toHAYTHAM_Calibrate_Scene_Master=1014;
-    public static final int toHAYTHAM_Calibrate_Display_Master=1015;
     public static final int toHAYTHAM_Calibrate_ReUse=1016;
+    public static final int toHAYTHAM_Experiment_display_Start=1017;
+    public static final int toHAYTHAM_Experiment_scene_Start = 1018;
 
 
     //HAYTHAM to GLASS
@@ -73,8 +75,8 @@ public class MessageType {
     public static final int toGLASS_LetsCorrectOffset = 2009;
 
     public static final int toGLASS_ERROR_MasterNOTFound = 2010;
-    public static final int toGLASS_GAZE_RGT_2 = 2011;
-    public static final int toGLASS_GAZE_HMGT_2= 2012;
+    public static final int toGLASS_Experiment_Scene = 2011;
+    public static final int toGLASS_Experiment_Display = 2012;
 
 
 
