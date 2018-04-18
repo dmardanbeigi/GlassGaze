@@ -21,7 +21,7 @@ How to install?
 
 How to use?
 --------------
-Tutorials and more detailes can be found at <http://goo.gl/kIRCdm>.
+Tutorials and more detailes can be found at <http://www.dmardanbegi.com/haytham/glassgaze.html>.
 
 Collaborators:
 --------------
