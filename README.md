@@ -1,5 +1,4 @@
-
-GLASSGAZE
+# GlassGaze
 
 Let your Google Glass know what exactly your eyes are looking at!
 =========
